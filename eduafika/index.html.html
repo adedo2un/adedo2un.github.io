@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adewumi Emmanuel — UI/UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D0D0D;
+    --cream: #F5F0E8;
+    --accent: #C8502A;
+    --accent2: #2A6FC8;
+    --muted: #7A7060;
+    --line: rgba(13,13,13,0.12);
+    --card-bg: #FFFFFF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(245,240,232,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; letter-spacing: 0.08em;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    font-size: 13px; font-weight: 400; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    color: var(--accent); border: 1px solid var(--accent);
+    padding: 8px 18px; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); color: white; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    padding: 8rem 4rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 900; line-height: 0.95;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: italic; color: var(--accent);
+    display: block;
+  }
+  .hero-desc {
+    font-size: 1rem; line-height: 1.8; color: var(--muted);
+    max-width: 420px; margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    background: var(--ink); color: var(--cream);
+    padding: 14px 32px; font-size: 13px;
+    font-family: 'Space Mono', monospace; letter-spacing: 0.08em;
+    text-decoration: none; transition: all 0.25s;
+    border: 1px solid var(--ink);
+  }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    padding: 14px 32px; font-size: 13px;
+    font-family: 'Space Mono', monospace; letter-spacing: 0.08em;
+    text-decoration: none; border: 1px solid var(--ink);
+    transition: all 0.25s;
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--cream); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    opacity: 0; animation: fadeIn 1.2s 0.5s forwards;
+  }
+  .hero-visual {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #2A6FC8 0%, #1A4A8A 50%, #0D2D5E 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual-inner {
+    text-align: center; color: white; padding: 3rem;
+  }
+  .hero-initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px; font-weight: 900;
+    line-height: 1; opacity: 0.15;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    user-select: none;
+  }
+  .hero-stats {
+    position: absolute; bottom: 3rem; left: 3rem; right: 3rem;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.2);
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    padding: 1.5rem 1rem; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 700; color: white;
+    display: block;
+  }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.1em; }
+  .hero-scroll {
+    position: absolute; bottom: 2rem; left: 4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .scroll-line {
+    width: 40px; height: 1px; background: var(--muted);
+    animation: pulse 2s infinite;
+  }
+
+  /* ABOUT STRIP */
+  .about-strip {
+    padding: 5rem 4rem;
+    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 4rem; align-items: center;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 700; line-height: 1.15;
+    color: var(--ink);
+  }
+  .about-text { font-size: 1rem; line-height: 1.9; color: var(--muted); margin-bottom: 2rem; }
+  .skills-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em;
+    padding: 6px 14px; border: 1px solid var(--line);
+    color: var(--muted); transition: all 0.2s;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* WORK SECTION */
+  .work-section {
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--line);
+  }
+  .work-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .work-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem; font-weight: 900;
+    color: var(--ink);
+  }
+  .work-heading span { color: var(--accent); font-style: italic; }
+  .work-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: var(--muted); letter-spacing: 0.1em;
+  }
+
+  /* PROJECTS GRID */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.35s;
+    position: relative;
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(13,13,13,0.12);
+  }
+  .pc-1 { grid-column: span 7; }
+  .pc-2 { grid-column: span 5; }
+  .pc-3 { grid-column: span 4; }
+  .pc-4 { grid-column: span 4; }
+  .pc-5 { grid-column: span 4; }
+  .pc-6 { grid-column: span 6; }
+  .pc-7 { grid-column: span 6; }
+  .pc-8 { grid-column: span 12; }
+
+  .project-visual {
+    aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .pc-1 .project-visual, .pc-8 .project-visual { aspect-ratio: 16/8; }
+  .pc-3 .project-visual, .pc-4 .project-visual, .pc-5 .project-visual { aspect-ratio: 4/3; }
+
+  .project-visual svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+  .project-visual .ui-mock {
+    position: absolute; inset: 0;
+    padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .project-overlay {
+    position: absolute; inset: 0; background: rgba(13,13,13,0);
+    transition: background 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-card:hover .project-overlay { background: rgba(13,13,13,0.5); }
+  .overlay-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: white; letter-spacing: 0.12em;
+    opacity: 0; transform: translateY(10px);
+    transition: all 0.3s 0.05s;
+    border: 1px solid white; padding: 10px 22px;
+  }
+  .project-card:hover .overlay-text { opacity: 1; transform: translateY(0); }
+
+  .project-info { padding: 1.5rem; }
+  .project-category {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .project-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .ptag {
+    font-size: 10px; padding: 3px 10px;
+    background: var(--cream); border: 1px solid var(--line);
+    color: var(--muted); font-family: 'Space Mono', monospace;
+  }
+
+  /* EXPERIENCE */
+  .exp-section {
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--line);
+    background: var(--ink); color: var(--cream);
+  }
+  .exp-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 900; color: var(--cream);
+    margin-bottom: 4rem;
+  }
+  .exp-heading em { color: var(--accent); font-style: italic; }
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid; grid-template-columns: 200px 1fr auto;
+    gap: 2rem; align-items: start;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(245,240,232,0.1);
+    transition: background 0.2s;
+  }
+  .exp-item:hover { background: rgba(255,255,255,0.02); }
+  .exp-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: rgba(245,240,232,0.4); letter-spacing: 0.1em;
+    padding-top: 4px;
+  }
+  .exp-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .exp-company { font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+  .exp-details { font-size: 13px; color: rgba(245,240,232,0.5); line-height: 1.7; max-width: 500px; }
+  .exp-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem; font-weight: 900;
+    color: rgba(245,240,232,0.06);
+    align-self: center;
+  }
+
+  /* PROCESS */
+  .process-section {
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--line);
+  }
+  .process-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 900; color: var(--ink);
+    margin-bottom: 4rem;
+  }
+  .process-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--line); }
+  .process-step {
+    background: var(--cream); padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+  .process-step:hover { background: var(--ink); color: var(--cream); }
+  .process-step:hover .ps-num,
+  .process-step:hover .ps-title,
+  .process-step:hover .ps-desc { color: inherit; }
+  .ps-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--accent); letter-spacing: 0.1em;
+    margin-bottom: 1.5rem; display: block;
+  }
+  .ps-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 0.75rem;
+    transition: color 0.2s;
+  }
+  .ps-desc { font-size: 13px; color: var(--muted); line-height: 1.7; transition: color 0.2s; }
+
+  /* TESTIMONIALS */
+  .testimonials-section {
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--line);
+    background: #F0EBE1;
+  }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 3rem; }
+  .testimonial-card {
+    background: white; padding: 2rem;
+    border: 1px solid var(--line);
+  }
+  .t-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; line-height: 1.8; color: var(--ink);
+    margin-bottom: 1.5rem; font-style: italic;
+  }
+  .t-author { font-size: 12px; font-weight: 500; color: var(--ink); }
+  .t-role { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .t-stars { color: var(--accent); font-size: 14px; margin-bottom: 1rem; letter-spacing: 2px; }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 8rem 4rem;
+    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: center;
+  }
+  .contact-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 900; color: var(--ink);
+    line-height: 1.1; margin-bottom: 1.5rem;
+  }
+  .contact-heading em { color: var(--accent); font-style: italic; }
+  .contact-sub { font-size: 1rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+  .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-row {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 14px; color: var(--muted);
+  }
+  .contact-icon {
+    width: 36px; height: 36px; background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-icon svg { width: 16px; height: 16px; fill: var(--cream); }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-input, .form-textarea {
+    background: transparent; border: 1px solid var(--line);
+    padding: 14px 16px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; color: var(--ink);
+    outline: none; transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-btn {
+    background: var(--ink); color: var(--cream);
+    padding: 16px 36px; font-size: 13px;
+    font-family: 'Space Mono', monospace; letter-spacing: 0.1em;
+    border: none; cursor: none; transition: all 0.25s;
+    align-self: flex-start;
+  }
+  .form-btn:hover { background: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; color: var(--ink);
+  }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.08em;
+  }
+  .social-links { display: flex; gap: 1.5rem; }
+  .social-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; color: var(--muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .social-links a:hover { color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* MARQUEE */
+  .marquee-strip {
+    padding: 1.2rem 0;
+    background: var(--accent); overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .marquee-inner {
+    display: inline-flex; gap: 3rem;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; color: white;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .marquee-item::after {
+    content: '◆'; font-size: 8px; opacity: 0.6;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ADE<span>.</span></a>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#experience">Experience</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">HIRE ME</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">UI/UX DESIGNER · SOCIAL MEDIA SPECIALIST · ABUJA, NIGERIA</div>
+    <h1 class="hero-name">
+      Adewumi<br>
+      <em>Emmanuel</em>
+    </h1>
+    <p class="hero-desc">
+      Crafting interfaces that feel inevitable — where every pixel earns its place and every interaction tells a story. 4+ years designing digital products people actually love to use.
+    </p>
+    <div class="hero-btns">
+      <a href="#work" class="btn-primary">VIEW WORK</a>
+      <a href="#contact" class="btn-outline">GET IN TOUCH</a>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      SCROLL TO EXPLORE
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <canvas id="hero3d" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-num">4+</span>
+          <span class="stat-label">YEARS EXP</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">30+</span>
+          <span class="stat-label">PROJECTS</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">15+</span>
+          <span class="stat-label">CLIENTS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">UI DESIGN</span>
+    <span class="marquee-item">UX RESEARCH</span>
+    <span class="marquee-item">FIGMA</span>
+    <span class="marquee-item">SOCIAL MEDIA MONITORING</span>
+    <span class="marquee-item">BRAND IDENTITY</span>
+    <span class="marquee-item">PROTOTYPING</span>
+    <span class="marquee-item">CONTENT MODERATION</span>
+    <span class="marquee-item">ADOBE XD</span>
+    <span class="marquee-item">UI DESIGN</span>
+    <span class="marquee-item">UX RESEARCH</span>
+    <span class="marquee-item">FIGMA</span>
+    <span class="marquee-item">SOCIAL MEDIA MONITORING</span>
+    <span class="marquee-item">BRAND IDENTITY</span>
+    <span class="marquee-item">PROTOTYPING</span>
+    <span class="marquee-item">CONTENT MODERATION</span>
+    <span class="marquee-item">ADOBE XD</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-strip reveal">
+  <div>
+    <div class="section-label">ABOUT ME</div>
+    <h2 class="about-heading">Design with<br>purpose &<br>precision.</h2>
+  </div>
+  <div>
+    <p class="about-text">
+      I'm Adewumi Adedotun Emmanuel — a UI/UX designer who believes that great design is invisible. Based in Abuja, Nigeria, I blend rigorous user research with sharp visual craft to build digital products that solve real problems. My background spans product design, social media monitoring, and content moderation, particularly in the health and maternity space.
+    </p>
+    <p class="about-text">
+      Whether I'm mapping a user journey, building a design system, or analyzing brand sentiment across platforms, I bring the same energy: obsessive attention to detail and a commitment to outcomes over aesthetics alone.
+    </p>
+    <div class="skills-tags">
+      <span class="tag">FIGMA</span>
+      <span class="tag">ADOBE XD</span>
+      <span class="tag">SKETCH</span>
+      <span class="tag">CANVA</span>
+      <span class="tag">HOOTSUITE</span>
+      <span class="tag">BRANDWATCH</span>
+      <span class="tag">SPROUT SOCIAL</span>
+      <span class="tag">USER RESEARCH</span>
+      <span class="tag">DESIGN SYSTEMS</span>
+      <span class="tag">PROTOTYPING</span>
+      <span class="tag">A/B TESTING</span>
+      <span class="tag">USABILITY TESTING</span>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work-section" id="work">
+  <div class="work-header reveal">
+    <h2 class="work-heading">Selected<br><span>Works</span></h2>
+    <span class="work-count">14 PROJECTS</span>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 - Large -->
+    <div class="project-card pc-1 reveal">
+      <div class="project-visual" style="background:#EAF3FB;">
+        <!-- Dashboard mockup -->
+        <svg viewBox="0 0 700 350" xmlns="http://www.w3.org/2000/svg">
+          <rect width="700" height="350" fill="#EAF3FB"/>
+          <!-- sidebar -->
+          <rect x="0" y="0" width="130" height="350" fill="#1A4A8A"/>
+          <circle cx="65" cy="40" r="20" fill="rgba(255,255,255,0.15)"/>
+          <text x="65" y="46" text-anchor="middle" fill="white" font-size="12" font-family="serif" font-weight="bold">AE</text>
+          <rect x="15" y="80" width="100" height="8" rx="4" fill="rgba(255,255,255,0.5)"/>
+          <rect x="15" y="100" width="80" height="6" rx="3" fill="rgba(255,255,255,0.2)"/>
+          <rect x="15" y="125" width="100" height="30" rx="4" fill="rgba(255,255,255,0.15)"/>
+          <rect x="15" y="165" width="100" height="30" rx="4" fill="rgba(255,255,255,0.08)"/>
+          <rect x="15" y="205" width="100" height="30" rx="4" fill="rgba(255,255,255,0.08)"/>
+          <rect x="15" y="245" width="100" height="30" rx="4" fill="rgba(255,255,255,0.08)"/>
+          <!-- main area -->
+          <rect x="150" y="20" width="200" height="80" rx="6" fill="white"/>
+          <rect x="160" y="32" width="60" height="8" rx="4" fill="#E0E8F4"/>
+          <text x="160" y="70" fill="#1A4A8A" font-size="24" font-weight="bold" font-family="serif">42,800</text>
+          <text x="160" y="85" fill="#888" font-size="9" font-family="sans-serif">Monthly Active Users</text>
+          <rect x="370" y="20" width="160" height="80" rx="6" fill="white"/>
+          <rect x="380" y="32" width="60" height="8" rx="4" fill="#E0E8F4"/>
+          <text x="380" y="70" fill="#C8502A" font-size="24" font-weight="bold" font-family="serif">+34%</text>
+          <text x="380" y="85" fill="#888" font-size="9" font-family="sans-serif">Engagement Rate</text>
+          <rect x="550" y="20" width="130" height="80" rx="6" fill="white"/>
+          <text x="575" y="70" fill="#2A7A4A" font-size="24" font-weight="bold" font-family="serif">98%</text>
+          <text x="563" y="85" fill="#888" font-size="9" font-family="sans-serif">Brand Safety Score</text>
+          <!-- chart -->
+          <rect x="150" y="120" width="380" height="160" rx="6" fill="white"/>
+          <text x="168" y="142" fill="#1A2A4A" font-size="11" font-weight="bold" font-family="sans-serif">Social Sentiment Trend</text>
+          <polyline points="168,260 210,240 252,245 294,220 336,230 378,200 420,210 462,185 504,190" fill="none" stroke="#1A4A8A" stroke-width="2.5"/>
+          <polyline points="168,275 210,270 252,268 294,265 336,270 378,260 420,258 462,250 504,248" fill="none" stroke="#C8502A" stroke-width="2" stroke-dasharray="4,3"/>
+          <rect x="168" y="152" width="8" height="6" fill="#1A4A8A" rx="1"/>
+          <text x="180" y="158" fill="#888" font-size="9" font-family="sans-serif">Positive</text>
+          <rect x="220" y="152" width="8" height="6" fill="#C8502A" rx="1"/>
+          <text x="232" y="158" fill="#888" font-size="9" font-family="sans-serif">Neutral</text>
+          <!-- right panel -->
+          <rect x="550" y="120" width="130" height="160" rx="6" fill="white"/>
+          <text x="565" y="142" fill="#1A2A4A" font-size="10" font-weight="bold" font-family="sans-serif">Top Mentions</text>
+          <rect x="560" y="150" width="100" height="18" rx="3" fill="#EAF3FB"/>
+          <rect x="560" y="175" width="90" height="18" rx="3" fill="#EAF3FB"/>
+          <rect x="560" y="200" width="80" height="18" rx="3" fill="#EAF3FB"/>
+          <rect x="560" y="225" width="70" height="18" rx="3" fill="#EAF3FB"/>
+          <rect x="560" y="250" width="60" height="18" rx="3" fill="#EAF3FB"/>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">SOCIAL MEDIA MONITORING · DASHBOARD</div>
+        <div class="project-title">SentimentIQ — Brand Intelligence Platform</div>
+        <div class="project-desc">A real-time social listening dashboard for tracking brand sentiment across 5 platforms. Built for a maternity health brand with 50K+ community members.</div>
+        <div class="project-tags">
+          <span class="ptag">FIGMA</span><span class="ptag">UX RESEARCH</span><span class="ptag">DATA VIZ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-card pc-2 reveal">
+      <div class="project-visual" style="background:#FDF0EA;">
+        <svg viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="225" fill="#FDF0EA"/>
+          <!-- Mobile app mockup -->
+          <rect x="120" y="10" width="160" height="205" rx="16" fill="#1A1A2E" stroke="#333" stroke-width="1"/>
+          <rect x="155" y="8" width="90" height="8" rx="4" fill="#333"/>
+          <rect x="128" y="25" width="144" height="180" rx="8" fill="#F5F0E8"/>
+          <!-- app header -->
+          <rect x="128" y="25" width="144" height="40" rx="8" fill="#C8502A"/>
+          <rect x="128" y="53" width="144" height="12" fill="#C8502A"/>
+          <text x="200" y="52" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="sans-serif">MamaTrack</text>
+          <!-- cards -->
+          <rect x="136" y="72" width="128" height="45" rx="6" fill="white"/>
+          <circle cx="152" cy="88" r="8" fill="#FDDDD5"/>
+          <rect x="166" y="82" width="60" height="6" rx="3" fill="#E8E0D8"/>
+          <rect x="166" y="93" width="40" height="5" rx="2" fill="#E8E0D8"/>
+          <rect x="136" y="124" width="60" height="40" rx="6" fill="white"/>
+          <rect x="204" y="124" width="60" height="40" rx="6" fill="white"/>
+          <text x="166" y="148" text-anchor="middle" fill="#C8502A" font-size="14" font-weight="bold" font-family="serif">28</text>
+          <text x="166" y="158" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">Weeks</text>
+          <text x="234" y="148" text-anchor="middle" fill="#1A4A8A" font-size="14" font-weight="bold" font-family="serif">3rd</text>
+          <text x="234" y="158" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">Trimester</text>
+          <rect x="136" y="172" width="128" height="25" rx="5" fill="#C8502A"/>
+          <text x="200" y="188" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">Track Today's Health</text>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">MOBILE APP · UI/UX</div>
+        <div class="project-title">MamaTrack — Maternity Wellness App</div>
+        <div class="project-desc">End-to-end design for a pregnancy tracking app. Redesigned onboarding reduced drop-off by 34% in user testing.</div>
+        <div class="project-tags">
+          <span class="ptag">ADOBE XD</span><span class="ptag">MOBILE</span><span class="ptag">HEALTH TECH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-card pc-3 reveal">
+      <div class="project-visual" style="background:#E8F4EC;">
+        <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="225" fill="#E8F4EC"/>
+          <rect x="20" y="20" width="260" height="185" rx="8" fill="white"/>
+          <rect x="20" y="20" width="260" height="45" rx="8" fill="#1A2A1A"/>
+          <rect x="20" y="53" width="260" height="12" fill="#1A2A1A"/>
+          <circle cx="48" cy="40" r="12" fill="#2A7A4A"/>
+          <text x="75" y="36" fill="white" font-size="9" font-family="sans-serif" font-weight="bold">BrandWatch Report</text>
+          <text x="75" y="48" fill="rgba(255,255,255,0.5)" font-size="8" font-family="sans-serif">Weekly · Jun 2024</text>
+          <!-- bar chart -->
+          <rect x="40" y="85" width="20" height="70" rx="2" fill="#2A7A4A" opacity="0.9"/>
+          <rect x="70" y="100" width="20" height="55" rx="2" fill="#2A7A4A" opacity="0.7"/>
+          <rect x="100" y="92" width="20" height="63" rx="2" fill="#2A7A4A" opacity="0.9"/>
+          <rect x="130" y="108" width="20" height="47" rx="2" fill="#C8502A" opacity="0.8"/>
+          <rect x="160" y="88" width="20" height="67" rx="2" fill="#2A7A4A" opacity="0.9"/>
+          <rect x="190" y="96" width="20" height="59" rx="2" fill="#2A7A4A" opacity="0.7"/>
+          <rect x="220" y="80" width="20" height="75" rx="2" fill="#2A7A4A" opacity="0.9"/>
+          <rect x="35" y="160" width="210" height="1" fill="#E0E0E0"/>
+          <!-- legend -->
+          <circle cx="40" cy="180" r="4" fill="#2A7A4A"/>
+          <text x="50" y="184" fill="#555" font-size="8" font-family="sans-serif">Positive Mentions</text>
+          <circle cx="140" cy="180" r="4" fill="#C8502A"/>
+          <text x="150" y="184" fill="#555" font-size="8" font-family="sans-serif">Flagged Content</text>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">ANALYTICS · REPORTING</div>
+        <div class="project-title">BrandGuard — Social Moderation System</div>
+        <div class="project-desc">Moderation workflow design cutting policy violation response time by 48%.</div>
+        <div class="project-tags">
+          <span class="ptag">FIGMA</span><span class="ptag">MONITORING</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="project-card pc-4 reveal">
+      <div class="project-visual" style="background:#F0EAFB;">
+        <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="225" fill="#F0EAFB"/>
+          <!-- e-commerce UI -->
+          <rect x="20" y="15" width="260" height="195" rx="8" fill="white"/>
+          <rect x="20" y="15" width="260" height="35" rx="8" fill="#534AB7"/>
+          <rect x="20" y="38" width="260" height="12" fill="#534AB7"/>
+          <text x="150" y="37" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="sans-serif">ShopNova</text>
+          <!-- product grid -->
+          <rect x="30" y="60" width="75" height="90" rx="4" fill="#F0EAFB"/>
+          <rect x="35" y="65" width="65" height="55" rx="3" fill="#C8BBF0"/>
+          <rect x="35" y="126" width="45" height="6" rx="3" fill="#E0D8F0"/>
+          <rect x="35" y="137" width="30" height="6" rx="3" fill="#534AB7"/>
+          <rect x="115" y="60" width="75" height="90" rx="4" fill="#F0EAFB"/>
+          <rect x="120" y="65" width="65" height="55" rx="3" fill="#A09AE0"/>
+          <rect x="120" y="126" width="45" height="6" rx="3" fill="#E0D8F0"/>
+          <rect x="120" y="137" width="30" height="6" rx="3" fill="#534AB7"/>
+          <rect x="200" y="60" width="70" height="90" rx="4" fill="#F0EAFB"/>
+          <rect x="205" y="65" width="60" height="55" rx="3" fill="#B8B2E8"/>
+          <rect x="205" y="126" width="40" height="6" rx="3" fill="#E0D8F0"/>
+          <rect x="205" y="137" width="28" height="6" rx="3" fill="#534AB7"/>
+          <!-- CTA -->
+          <rect x="30" y="165" width="240" height="30" rx="6" fill="#534AB7"/>
+          <text x="150" y="184" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">Continue to Checkout</text>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">E-COMMERCE · UI DESIGN</div>
+        <div class="project-title">ShopNova — Retail Platform Redesign</div>
+        <div class="project-desc">Redesigned product discovery reducing drop-off by 27%.</div>
+        <div class="project-tags">
+          <span class="ptag">SKETCH</span><span class="ptag">E-COMM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 5 -->
+    <div class="project-card pc-5 reveal">
+      <div class="project-visual" style="background:#FFF8E7;">
+        <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="225" fill="#FFF8E7"/>
+          <!-- brand identity system -->
+          <circle cx="150" cy="90" r="55" fill="#BA7517"/>
+          <text x="150" y="82" text-anchor="middle" fill="white" font-size="22" font-weight="bold" font-family="serif">NG</text>
+          <text x="150" y="100" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="9" font-family="sans-serif" letter-spacing="3">NURTURE GRACE</text>
+          <circle cx="40" cy="185" r="22" fill="#BA7517"/>
+          <circle cx="90" cy="185" r="22" fill="#EF9F27"/>
+          <circle cx="140" cy="185" r="22" fill="#FAC775"/>
+          <circle cx="190" cy="185" r="22" fill="#FFF8E7" stroke="#BA7517" stroke-width="1"/>
+          <rect x="218" y="173" width="60" height="24" rx="4" fill="#BA7517"/>
+          <text x="248" y="189" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">PRIMARY</text>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">BRAND IDENTITY · VISUAL DESIGN</div>
+        <div class="project-title">Nurture Grace — Brand System</div>
+        <div class="project-desc">Full visual identity system for a maternity wellness brand including logo, typography, and color palette.</div>
+        <div class="project-tags">
+          <span class="ptag">CANVA</span><span class="ptag">BRANDING</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 6 -->
+    <div class="project-card pc-6 reveal">
+      <div class="project-visual" style="background:#E8F0FB;">
+        <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
+          <rect width="440" height="248" fill="#E8F0FB"/>
+          <!-- Social media campaign layout -->
+          <rect x="20" y="15" width="190" height="218" rx="8" fill="#1A4A8A"/>
+          <text x="115" y="55" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="serif">World</text>
+          <text x="115" y="75" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="serif">Maternal</text>
+          <text x="115" y="95" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="serif">Health Day</text>
+          <line x1="60" y1="105" x2="170" y2="105" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <text x="115" y="125" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="9" font-family="sans-serif">May 11, 2024</text>
+          <circle cx="115" cy="170" r="30" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <text x="115" y="166" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">42K</text>
+          <text x="115" y="178" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="8" font-family="sans-serif">REACH</text>
+          <rect x="115" y="205" width="60" height="15" rx="4" fill="rgba(255,255,255,0.2)"/>
+          <text x="145" y="216" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif">#MamaStrong</text>
+
+          <!-- Right panel - analytics -->
+          <rect x="230" y="15" width="190" height="95" rx="8" fill="white"/>
+          <text x="245" y="35" fill="#1A2A4A" font-size="10" font-weight="bold" font-family="sans-serif">Campaign Performance</text>
+          <rect x="245" y="45" width="80" height="6" rx="3" fill="#E8F0FB"/>
+          <text x="245" y="72" fill="#1A4A8A" font-size="20" font-weight="bold" font-family="serif">98.2%</text>
+          <text x="245" y="85" fill="#888" font-size="8" font-family="sans-serif">Positive sentiment score</text>
+          <rect x="340" y="52" width="65" height="45" rx="4" fill="#EAF3FB"/>
+          <text x="372" y="76" text-anchor="middle" fill="#1A4A8A" font-size="16" font-weight="bold" font-family="serif">3.4x</text>
+          <text x="372" y="88" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">ROI</text>
+
+          <rect x="230" y="125" width="190" height="108" rx="8" fill="white"/>
+          <text x="245" y="145" fill="#1A2A4A" font-size="10" font-weight="bold" font-family="sans-serif">Engagement by Platform</text>
+          <rect x="245" y="158" width="100" height="10" rx="3" fill="#1A4A8A"/>
+          <text x="353" y="167" fill="#888" font-size="8" font-family="sans-serif">Instagram 65%</text>
+          <rect x="245" y="175" width="65" height="10" rx="3" fill="#C8502A"/>
+          <text x="318" y="184" fill="#888" font-size="8" font-family="sans-serif">Twitter 42%</text>
+          <rect x="245" y="192" width="50" height="10" rx="3" fill="#534AB7"/>
+          <text x="303" y="201" fill="#888" font-size="8" font-family="sans-serif">Facebook 32%</text>
+          <rect x="245" y="209" width="35" height="10" rx="3" fill="#2A7A4A"/>
+          <text x="288" y="218" fill="#888" font-size="8" font-family="sans-serif">TikTok 23%</text>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">SOCIAL CAMPAIGN · MONITORING</div>
+        <div class="project-title">World Maternal Health Day — Campaign Design & Analytics</div>
+        <div class="project-desc">Award-winning campaign design that reached 42K users with 98.2% positive sentiment. Won Nigeria Digital Excellence Award 2023.</div>
+        <div class="project-tags">
+          <span class="ptag">CANVA</span><span class="ptag">FIGMA</span><span class="ptag">BRANDWATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 7 -->
+    <div class="project-card pc-7 reveal">
+      <div class="project-visual" style="background:#EDFAF4;">
+        <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
+          <rect width="440" height="248" fill="#EDFAF4"/>
+          <!-- Onboarding flow -->
+          <rect x="20" y="20" width="120" height="208" rx="12" fill="#1A2A1A"/>
+          <rect x="28" y="32" width="104" height="184" rx="8" fill="#EDFAF4"/>
+          <circle cx="80" cy="80" r="28" fill="#E8F4EC" stroke="#2A7A4A" stroke-width="1.5"/>
+          <text x="80" y="77" text-anchor="middle" fill="#2A7A4A" font-size="10" font-family="sans-serif">Step 1</text>
+          <text x="80" y="88" text-anchor="middle" fill="#2A7A4A" font-size="8" font-family="sans-serif">of 4</text>
+          <rect x="38" y="120" width="84" height="8" rx="4" fill="#C8E8D0"/>
+          <rect x="48" y="136" width="64" height="6" rx="3" fill="#E0EDE0"/>
+          <rect x="48" y="150" width="55" height="6" rx="3" fill="#E0EDE0"/>
+          <rect x="38" y="175" width="84" height="24" rx="5" fill="#2A7A4A"/>
+          <text x="80" y="191" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">Get Started</text>
+          <rect x="42" y="206" width="20" height="5" rx="2" fill="#2A7A4A"/>
+          <rect x="66" y="206" width="8" height="5" rx="2" fill="#C8E8D0"/>
+          <rect x="78" y="206" width="8" height="5" rx="2" fill="#C8E8D0"/>
+          <rect x="90" y="206" width="8" height="5" rx="2" fill="#C8E8D0"/>
+
+          <!-- flow arrows -->
+          <text x="155" y="120" fill="#2A7A4A" font-size="18" font-family="sans-serif">→</text>
+
+          <rect x="175" y="20" width="120" height="208" rx="12" fill="#1A2A1A"/>
+          <rect x="183" y="32" width="104" height="184" rx="8" fill="#EDFAF4"/>
+          <circle cx="235" cy="80" r="28" fill="#C8E8D0" stroke="#2A7A4A" stroke-width="1.5"/>
+          <text x="235" y="77" text-anchor="middle" fill="#2A7A4A" font-size="10" font-family="sans-serif">Step 2</text>
+          <rect x="195" y="120" width="80" height="8" rx="4" fill="#2A7A4A"/>
+          <rect x="200" y="136" width="70" height="6" rx="3" fill="#C8E8D0"/>
+          <rect x="200" y="150" width="55" height="6" rx="3" fill="#E0EDE0"/>
+          <rect x="195" y="175" width="80" height="24" rx="5" fill="#2A7A4A"/>
+          <text x="235" y="191" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">Continue</text>
+          <rect x="195" y="206" width="8" height="5" rx="2" fill="#C8E8D0"/>
+          <rect x="207" y="206" width="20" height="5" rx="2" fill="#2A7A4A"/>
+
+          <text x="310" y="120" fill="#2A7A4A" font-size="18" font-family="sans-serif">→</text>
+
+          <rect x="330" y="20" width="90" height="208" rx="12" fill="#2A7A4A"/>
+          <rect x="338" y="32" width="74" height="184" rx="8" fill="#EDFAF4"/>
+          <circle cx="375" cy="80" r="22" fill="#2A7A4A"/>
+          <text x="375" y="77" text-anchor="middle" fill="white" font-size="14" font-family="sans-serif">✓</text>
+          <text x="375" y="92" text-anchor="middle" fill="white" font-size="7" font-family="sans-serif">Done!</text>
+          <rect x="348" y="120" width="55" height="6" rx="3" fill="#C8E8D0"/>
+          <rect x="348" y="133" width="45" height="6" rx="3" fill="#E0EDE0"/>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">UX DESIGN · ONBOARDING</div>
+        <div class="project-title">HealthNest — User Onboarding Flow</div>
+        <div class="project-desc">Redesigned 4-step onboarding for a health platform. Task completion improved from 58% to 89% after UX overhaul.</div>
+        <div class="project-tags">
+          <span class="ptag">FIGMA</span><span class="ptag">USER FLOWS</span><span class="ptag">TESTING</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 8 - Full width -->
+    <div class="project-card pc-8 reveal">
+      <div class="project-visual" style="background:#0D0D0D;">
+        <svg viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="280" fill="#0D0D0D"/>
+          <!-- Design system showcase -->
+          <text x="50" y="55" fill="white" font-size="28" font-weight="bold" font-family="serif">Design System — ADE.DS v2.0</text>
+          <text x="50" y="80" fill="rgba(255,255,255,0.4)" font-size="12" font-family="sans-serif">Typography · Colors · Components · Icons · Spacing</text>
+          <!-- color swatches -->
+          <rect x="50" y="100" width="60" height="60" rx="4" fill="#C8502A"/>
+          <rect x="120" y="100" width="60" height="60" rx="4" fill="#1A4A8A"/>
+          <rect x="190" y="100" width="60" height="60" rx="4" fill="#2A7A4A"/>
+          <rect x="260" y="100" width="60" height="60" rx="4" fill="#534AB7"/>
+          <rect x="330" y="100" width="60" height="60" rx="4" fill="#BA7517"/>
+          <rect x="400" y="100" width="60" height="60" rx="4" fill="#F5F0E8"/>
+          <rect x="50" y="168" width="410" height="1" fill="rgba(255,255,255,0.1)"/>
+          <!-- type scale -->
+          <text x="50" y="200" fill="white" font-size="22" font-weight="bold" font-family="serif">Display / 56px</text>
+          <text x="50" y="225" fill="rgba(255,255,255,0.6)" font-size="16" font-family="serif">Heading / 32px</text>
+          <text x="50" y="248" fill="rgba(255,255,255,0.4)" font-size="12" font-family="sans-serif">Body Regular / 16px · DM Sans</text>
+          <!-- buttons row -->
+          <rect x="500" y="100" width="130" height="40" rx="4" fill="#C8502A"/>
+          <text x="565" y="124" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif">Primary Button</text>
+          <rect x="645" y="100" width="130" height="40" rx="4" fill="transparent" stroke="white" stroke-width="1"/>
+          <text x="710" y="124" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif">Ghost Button</text>
+          <rect x="790" y="100" width="80" height="40" rx="20" fill="#2A7A4A"/>
+          <text x="830" y="124" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif">Pill</text>
+          <!-- input -->
+          <rect x="500" y="155" width="260" height="40" rx="4" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="520" y="179" fill="rgba(255,255,255,0.3)" font-size="11" font-family="sans-serif">Email address...</text>
+          <!-- card -->
+          <rect x="790" y="155" width="160" height="100" rx="6" fill="#1A1A2E" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <rect x="800" y="165" width="140" height="50" rx="4" fill="#1A4A8A" opacity="0.5"/>
+          <rect x="800" y="223" width="80" height="8" rx="3" fill="rgba(255,255,255,0.2)"/>
+          <rect x="800" y="238" width="55" height="6" rx="3" fill="rgba(255,255,255,0.1)"/>
+          <!-- icon grid -->
+          <text x="500" y="240" fill="rgba(255,255,255,0.3)" font-size="24" font-family="sans-serif">⬡ ◈ ◯ ◻ ◈ ⬡ ◯</text>
+        </svg>
+        <div class="project-overlay"><span class="overlay-text">VIEW PROJECT</span></div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">DESIGN SYSTEM · COMPONENT LIBRARY</div>
+        <div class="project-title">ADE.DS — Personal Design System v2.0</div>
+        <div class="project-desc">A comprehensive design system built across 3 years of client work — covering typography, color tokens, 80+ components, accessibility guidelines, and Figma variables. Used as the foundation for 6 production products.</div>
+        <div class="project-tags">
+          <span class="ptag">FIGMA</span><span class="ptag">TOKENS</span><span class="ptag">ACCESSIBILITY</span><span class="ptag">DOCUMENTATION</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INSTAGRAM WORKS SECTION -->
+  <div style="margin-top:4rem;">
+    <div class="work-header reveal" style="margin-bottom:2rem;">
+      <div>
+        <div class="section-label" style="margin-bottom:0.5rem;">INSTAGRAM UI WORKS</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--ink);">Dark Premium <span style="color:var(--accent);font-style:italic;">Mobile Screens</span></h3>
+      </div>
+      <a href="https://instagram.com/hardey_do2u" target="_blank" style="font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);border:1px solid var(--accent);padding:10px 20px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='var(--accent)';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='var(--accent)'">@hardey_do2u ↗</a>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- IG PROJECT 1 - Finance App -->
+      <div class="project-card pc-3 reveal">
+        <div class="project-visual" style="background:#0A0A0A;">
+          <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="225" fill="#0A0A0A"/>
+            <rect x="80" y="8" width="140" height="210" rx="18" fill="#141414" stroke="#C9A84C" stroke-width="1"/>
+            <rect x="118" y="8" width="64" height="10" rx="5" fill="#0A0A0A"/>
+            <text x="105" y="35" fill="#888" font-size="7" font-family="sans-serif">Good morning,</text>
+            <text x="105" y="47" fill="#C9A84C" font-size="8" font-weight="bold" font-family="sans-serif">Emmanuel</text>
+            <rect x="90" y="57" width="120" height="52" rx="9" fill="#C9A84C"/>
+            <text x="150" y="75" text-anchor="middle" fill="#0A0A0A" font-size="7" font-family="sans-serif">Total Balance</text>
+            <text x="150" y="94" text-anchor="middle" fill="#0A0A0A" font-size="14" font-weight="bold" font-family="serif">$24,850</text>
+            <text x="150" y="104" text-anchor="middle" fill="#1A1000" font-size="6" font-family="sans-serif">↑ +2.4% this month</text>
+            <rect x="90" y="118" width="26" height="22" rx="5" fill="#1E1E1E"/>
+            <rect x="122" y="118" width="26" height="22" rx="5" fill="#1E1E1E"/>
+            <rect x="154" y="118" width="26" height="22" rx="5" fill="#1E1E1E"/>
+            <rect x="186" y="118" width="26" height="22" rx="5" fill="#1E1E1E"/>
+            <text x="103" y="133" text-anchor="middle" fill="#C9A84C" font-size="10">↑</text>
+            <text x="135" y="133" text-anchor="middle" fill="#C9A84C" font-size="10">↓</text>
+            <text x="167" y="133" text-anchor="middle" fill="#C9A84C" font-size="10">⊕</text>
+            <text x="199" y="133" text-anchor="middle" fill="#C9A84C" font-size="10">≡</text>
+            <text x="92" y="154" fill="#888" font-size="6" font-family="sans-serif">Recent Transactions</text>
+            <circle cx="98" cy="168" r="7" fill="#1E1E1E"/>
+            <text x="112" y="165" fill="#EEE" font-size="7" font-family="sans-serif">Grocery Store</text>
+            <text x="200" y="165" text-anchor="end" fill="#FF6B6B" font-size="7" font-family="sans-serif">-$84</text>
+            <text x="112" y="174" fill="#666" font-size="5" font-family="sans-serif">Today · 9:42am</text>
+            <circle cx="98" cy="186" r="7" fill="#1E1E1E"/>
+            <text x="112" y="183" fill="#EEE" font-size="7" font-family="sans-serif">Salary Deposit</text>
+            <text x="200" y="183" text-anchor="end" fill="#4CAF50" font-size="7" font-family="sans-serif">+$3,200</text>
+            <text x="112" y="192" fill="#666" font-size="5" font-family="sans-serif">Yesterday</text>
+            <rect x="80" y="202" width="140" height="14" rx="0" fill="#111"/>
+            <text x="103" y="212" text-anchor="middle" fill="#C9A84C" font-size="9">⌂</text>
+            <text x="130" y="212" text-anchor="middle" fill="#444" font-size="9">◎</text>
+            <text x="157" y="212" text-anchor="middle" fill="#444" font-size="9">⊡</text>
+            <text x="184" y="212" text-anchor="middle" fill="#444" font-size="9">♡</text>
+            <text x="150" y="223" text-anchor="middle" fill="#C9A84C" font-size="5" font-family="sans-serif" letter-spacing="2">D.M.J · @hardey_do2u</text>
+          </svg>
+          <div class="project-overlay"><span class="overlay-text">VIEW ON IG</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">MOBILE UI · DARK PREMIUM · INSTAGRAM</div>
+          <div class="project-title">FinanceFlow — Banking App UI</div>
+          <div class="project-desc">Dark premium mobile banking UI with gold accents, real-time balance card, and transaction history. Posted on @hardey_do2u.</div>
+          <div class="project-tags"><span class="ptag">FIGMA</span><span class="ptag">DARK UI</span><span class="ptag">FINTECH</span></div>
+        </div>
+      </div>
+
+      <!-- IG PROJECT 2 - Fitness -->
+      <div class="project-card pc-4 reveal">
+        <div class="project-visual" style="background:#0A0A0A;">
+          <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="225" fill="#0A0A0A"/>
+            <rect x="80" y="8" width="140" height="210" rx="18" fill="#0D0D0D" stroke="#C9A84C" stroke-width="1"/>
+            <rect x="118" y="8" width="64" height="10" rx="5" fill="#0A0A0A"/>
+            <text x="92" y="35" fill="#888" font-size="7" font-family="sans-serif">Today's Progress</text>
+            <text x="92" y="47" fill="#EEE" font-size="8" font-weight="bold" font-family="sans-serif">Keep going! 💪</text>
+            <!-- ring -->
+            <circle cx="150" cy="105" r="36" fill="none" stroke="#1E1E1E" stroke-width="9"/>
+            <circle cx="150" cy="105" r="36" fill="none" stroke="#C9A84C" stroke-width="9" stroke-dasharray="170 226" stroke-dashoffset="56" stroke-linecap="round"/>
+            <circle cx="150" cy="105" r="24" fill="none" stroke="#1E1E1E" stroke-width="7"/>
+            <circle cx="150" cy="105" r="24" fill="none" stroke="#4CAF50" stroke-width="7" stroke-dasharray="120 150" stroke-dashoffset="38" stroke-linecap="round"/>
+            <text x="150" y="102" text-anchor="middle" fill="#EEE" font-size="12" font-weight="bold" font-family="serif">75%</text>
+            <text x="150" y="113" text-anchor="middle" fill="#666" font-size="6" font-family="sans-serif">Daily Goal</text>
+            <!-- stats -->
+            <rect x="88" y="150" width="34" height="28" rx="6" fill="#1A1A1A"/>
+            <text x="105" y="163" text-anchor="middle" fill="#C9A84C" font-size="8" font-weight="bold" font-family="sans-serif">8.2k</text>
+            <text x="105" y="173" text-anchor="middle" fill="#666" font-size="5" font-family="sans-serif">Steps</text>
+            <rect x="133" y="150" width="34" height="28" rx="6" fill="#1A1A1A"/>
+            <text x="150" y="163" text-anchor="middle" fill="#C9A84C" font-size="8" font-weight="bold" font-family="sans-serif">420</text>
+            <text x="150" y="173" text-anchor="middle" fill="#666" font-size="5" font-family="sans-serif">Calories</text>
+            <rect x="178" y="150" width="34" height="28" rx="6" fill="#1A1A1A"/>
+            <text x="195" y="163" text-anchor="middle" fill="#C9A84C" font-size="8" font-weight="bold" font-family="sans-serif">48m</text>
+            <text x="195" y="173" text-anchor="middle" fill="#666" font-size="5" font-family="sans-serif">Active</text>
+            <rect x="88" y="186" width="124" height="18" rx="6" fill="#1A1A1A"/>
+            <text x="100" y="198" fill="#EEE" font-size="7" font-family="sans-serif">🏃 Morning Run · 5km</text>
+            <rect x="188" y="189" width="18" height="12" rx="4" fill="#C9A84C"/>
+            <text x="197" y="199" text-anchor="middle" fill="#0A0A0A" font-size="6" font-weight="bold">Go</text>
+            <text x="150" y="223" text-anchor="middle" fill="#C9A84C" font-size="5" font-family="sans-serif" letter-spacing="2">D.M.J · @hardey_do2u</text>
+          </svg>
+          <div class="project-overlay"><span class="overlay-text">VIEW ON IG</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">MOBILE UI · DARK PREMIUM · INSTAGRAM</div>
+          <div class="project-title">FitTrack — Fitness Tracker UI</div>
+          <div class="project-desc">Animated ring progress system with gold/green dual-metric tracking. Designed to motivate users at a glance.</div>
+          <div class="project-tags"><span class="ptag">FIGMA</span><span class="ptag">HEALTH APP</span><span class="ptag">DARK UI</span></div>
+        </div>
+      </div>
+
+      <!-- IG PROJECT 3 - Music -->
+      <div class="project-card pc-5 reveal">
+        <div class="project-visual" style="background:#0A0A0A;">
+          <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="225" fill="#0A0A0A"/>
+            <rect x="80" y="8" width="140" height="210" rx="18" fill="#0D0D0D" stroke="#C9A84C" stroke-width="1"/>
+            <rect x="118" y="8" width="64" height="10" rx="5" fill="#0A0A0A"/>
+            <text x="150" y="35" text-anchor="middle" fill="#888" font-size="7" font-family="sans-serif">Now Playing</text>
+            <!-- vinyl disc -->
+            <circle cx="150" cy="100" r="48" fill="#1A1600" stroke="#C9A84C" stroke-width="1.5"/>
+            <circle cx="150" cy="100" r="34" fill="#111" stroke="#2A2200" stroke-width="1"/>
+            <circle cx="150" cy="100" r="20" fill="#1A1600" stroke="#2A2200" stroke-width="0.5"/>
+            <circle cx="150" cy="100" r="6" fill="#C9A84C"/>
+            <circle cx="150" cy="100" r="2" fill="#0A0A0A"/>
+            <text x="150" y="163" text-anchor="middle" fill="#EEE" font-size="9" font-weight="bold" font-family="serif">Midnight Gold</text>
+            <text x="150" y="174" text-anchor="middle" fill="#C9A84C" font-size="7" font-family="sans-serif">D.M.J Vibes · Afrobeats</text>
+            <rect x="90" y="181" width="120" height="4" rx="2" fill="#1E1E1E"/>
+            <rect x="90" y="181" width="55" height="4" rx="2" fill="#C9A84C"/>
+            <circle cx="148" cy="183" r="4" fill="#C9A84C"/>
+            <text x="100" y="198" text-anchor="middle" fill="#444" font-size="10">⏮</text>
+            <circle cx="150" cy="196" r="10" fill="#C9A84C"/>
+            <text x="150" y="200" text-anchor="middle" fill="#0A0A0A" font-size="10">▶</text>
+            <text x="200" y="198" text-anchor="middle" fill="#444" font-size="10">⏭</text>
+            <text x="150" y="223" text-anchor="middle" fill="#C9A84C" font-size="5" font-family="sans-serif" letter-spacing="2">D.M.J · @hardey_do2u</text>
+          </svg>
+          <div class="project-overlay"><span class="overlay-text">VIEW ON IG</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">MOBILE UI · DARK PREMIUM · INSTAGRAM</div>
+          <div class="project-title">SoundGold — Music Player UI</div>
+          <div class="project-desc">Vinyl-inspired music player with dark premium aesthetic. Gold progress indicator and smooth control layout.</div>
+          <div class="project-tags"><span class="ptag">FIGMA</span><span class="ptag">MUSIC APP</span><span class="ptag">DARK UI</span></div>
+        </div>
+      </div>
+
+      <!-- IG PROJECT 4 - Food + Travel side by side -->
+      <div class="project-card pc-6 reveal">
+        <div class="project-visual" style="background:#0A0A0A;">
+          <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
+            <rect width="440" height="248" fill="#0A0A0A"/>
+            <!-- Food app phone -->
+            <rect x="20" y="15" width="120" height="218" rx="16" fill="#111" stroke="#C9A84C" stroke-width="0.8"/>
+            <rect x="55" y="15" width="50" height="9" rx="4.5" fill="#0A0A0A"/>
+            <rect x="20" y="24" width="120" height="45" rx="0" fill="#C9A84C"/>
+            <rect x="20" y="55" width="120" height="14" fill="#C9A84C"/>
+            <text x="80" y="42" text-anchor="middle" fill="#0A0A0A" font-size="7" font-weight="bold" font-family="sans-serif">Food Delivery</text>
+            <text x="80" y="54" text-anchor="middle" fill="#1A0A00" font-size="6" font-family="sans-serif">Abuja, Nigeria ▾</text>
+            <rect x="30" y="75" width="100" height="14" rx="7" fill="#1E1E1E"/>
+            <text x="44" y="85" fill="#555" font-size="6" font-family="sans-serif">🔍 Search food...</text>
+            <text x="32" y="104" fill="#EEE" font-size="6" font-weight="bold" font-family="sans-serif">Categories</text>
+            <rect x="28" y="108" width="24" height="24" rx="6" fill="#1E1E1E" stroke="#C9A84C" stroke-width="0.6"/>
+            <text x="40" y="123" text-anchor="middle" font-size="12">🍕</text>
+            <rect x="58" y="108" width="24" height="24" rx="6" fill="#1E1E1E"/>
+            <text x="70" y="123" text-anchor="middle" font-size="12">🍣</text>
+            <rect x="88" y="108" width="24" height="24" rx="6" fill="#1E1E1E"/>
+            <text x="100" y="123" text-anchor="middle" font-size="12">🍔</text>
+            <rect x="118" y="108" width="18" height="24" rx="6" fill="#1E1E1E"/>
+            <text x="127" y="123" text-anchor="middle" font-size="12">🥗</text>
+            <rect x="28" y="138" width="112" height="52" rx="8" fill="#1A1A1A"/>
+            <rect x="118" y="140" width="20" height="48" rx="6" fill="#2A2A2A"/>
+            <text x="128" y="168" text-anchor="middle" font-size="18">🍕</text>
+            <text x="36" y="155" fill="#EEE" font-size="7" font-weight="bold" font-family="sans-serif">Margherita Pizza</text>
+            <text x="36" y="166" fill="#C9A84C" font-size="7" font-family="sans-serif">$12.99</text>
+            <text x="36" y="177" fill="#666" font-size="5" font-family="sans-serif">⭐ 4.8 · 20 min</text>
+            <text x="80" y="205" text-anchor="middle" fill="#C9A84C" font-size="5" letter-spacing="1.5">D.M.J</text>
+
+            <!-- Travel app phone -->
+            <rect x="155" y="15" width="120" height="218" rx="16" fill="#111" stroke="#C9A84C" stroke-width="0.8"/>
+            <rect x="190" y="15" width="50" height="9" rx="4.5" fill="#0A0A0A"/>
+            <rect x="155" y="24" width="120" height="60" rx="0" fill="#0D1820"/>
+            <rect x="155" y="68" width="120" height="16" fill="#0D1820"/>
+            <!-- map grid -->
+            <line x1="155" y1="38" x2="275" y2="38" stroke="#152030" stroke-width="1"/>
+            <line x1="155" y1="52" x2="275" y2="52" stroke="#152030" stroke-width="1"/>
+            <line x1="175" y1="24" x2="175" y2="84" stroke="#152030" stroke-width="1"/>
+            <line x1="205" y1="24" x2="205" y2="84" stroke="#152030" stroke-width="1"/>
+            <line x1="235" y1="24" x2="235" y2="84" stroke="#152030" stroke-width="1"/>
+            <line x1="255" y1="24" x2="255" y2="84" stroke="#152030" stroke-width="1"/>
+            <circle cx="215" cy="57" r="11" fill="#C9A84C"/>
+            <circle cx="215" cy="57" r="5" fill="#0A0A0A"/>
+            <circle cx="215" cy="57" r="2" fill="#C9A84C"/>
+            <text x="215" y="78" text-anchor="middle" fill="#EEE" font-size="6" font-weight="bold" font-family="sans-serif">Abuja, Nigeria</text>
+            <rect x="163" y="88" width="104" height="14" rx="7" fill="#1E1E1E"/>
+            <text x="177" y="98" fill="#555" font-size="6" font-family="sans-serif">🔍 Where next?</text>
+            <text x="163" y="113" fill="#EEE" font-size="6" font-weight="bold" font-family="sans-serif">Popular</text>
+            <rect x="163" y="118" width="46" height="42" rx="6" fill="#141414"/>
+            <text x="186" y="142" text-anchor="middle" font-size="18">🗼</text>
+            <text x="163" y="165" fill="#EEE" font-size="6" font-weight="bold" font-family="sans-serif">Paris</text>
+            <text x="163" y="174" fill="#C9A84C" font-size="5" font-family="sans-serif">$840</text>
+            <rect x="216" y="118" width="46" height="42" rx="6" fill="#141414"/>
+            <text x="239" y="142" text-anchor="middle" font-size="18">🗽</text>
+            <text x="216" y="165" fill="#EEE" font-size="6" font-weight="bold" font-family="sans-serif">NY</text>
+            <text x="216" y="174" fill="#C9A84C" font-size="5" font-family="sans-serif">$1,200</text>
+            <rect x="163" y="180" width="100" height="22" rx="6" fill="#1A1A1A" stroke="#C9A84C" stroke-width="0.4"/>
+            <text x="173" y="189" fill="#C9A84C" font-size="8">✈</text>
+            <text x="185" y="187" fill="#EEE" font-size="6" font-family="sans-serif">Dubai · Dec 14</text>
+            <text x="185" y="197" fill="#666" font-size="5" font-family="sans-serif">Emirates · EK782</text>
+            <text x="215" y="215" text-anchor="middle" fill="#C9A84C" font-size="5" letter-spacing="1.5">D.M.J</text>
+
+            <!-- Social caption -->
+            <rect x="290" y="15" width="140" height="218" rx="10" fill="#141414" stroke="#333" stroke-width="0.5"/>
+            <text x="310" y="42" fill="#C9A84C" font-size="9" font-weight="bold" font-family="sans-serif">D.M.J Designs</text>
+            <text x="310" y="56" fill="#666" font-size="7" font-family="sans-serif">@hardey_do2u</text>
+            <rect x="300" y="64" width="120" height="1" fill="#222"/>
+            <text x="300" y="82" fill="#888" font-size="6.5" font-family="sans-serif">Dark premium UI screens</text>
+            <text x="300" y="94" fill="#888" font-size="6.5" font-family="sans-serif">that convert visitors</text>
+            <text x="300" y="106" fill="#888" font-size="6.5" font-family="sans-serif">into customers 🔥</text>
+            <text x="300" y="126" fill="#C9A84C" font-size="6.5" font-family="sans-serif">#UIDesign #UXDesign</text>
+            <text x="300" y="138" fill="#C9A84C" font-size="6.5" font-family="sans-serif">#MobileUI #Figma</text>
+            <text x="300" y="150" fill="#C9A84C" font-size="6.5" font-family="sans-serif">#NigerianDesigner</text>
+            <rect x="300" y="164" width="120" height="1" fill="#222"/>
+            <text x="300" y="180" fill="#666" font-size="6" font-family="sans-serif">❤️ 2,841 likes</text>
+            <text x="300" y="193" fill="#666" font-size="6" font-family="sans-serif">💬 148 comments</text>
+            <rect x="300" y="205" width="50" height="14" rx="7" fill="#C9A84C"/>
+            <text x="325" y="215" text-anchor="middle" fill="#0A0A0A" font-size="6" font-weight="bold" font-family="sans-serif">Follow</text>
+          </svg>
+          <div class="project-overlay"><span class="overlay-text">VIEW ON IG</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">MOBILE UI · INSTAGRAM POSTS · DARK PREMIUM</div>
+          <div class="project-title">Food Delivery & Travel App — Instagram UI Series</div>
+          <div class="project-desc">Two dark premium mobile app screens — food ordering and travel booking — posted as part of the D.M.J design series on Instagram @hardey_do2u.</div>
+          <div class="project-tags"><span class="ptag">FIGMA</span><span class="ptag">FOOD APP</span><span class="ptag">TRAVEL UI</span><span class="ptag">INSTAGRAM</span></div>
+        </div>
+      </div>
+
+      <!-- IG PROJECT 5 - Carousel case study -->
+      <div class="project-card pc-7 reveal">
+        <div class="project-visual" style="background:#111;">
+          <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
+            <rect width="440" height="248" fill="#111"/>
+            <!-- Slide 1 -->
+            <rect x="10" y="10" width="130" height="228" rx="10" fill="#0D0D0D" stroke="#C9A84C" stroke-width="1"/>
+            <text x="25" y="35" fill="#666" font-size="7" font-family="sans-serif">1 / 3</text>
+            <rect x="22" y="42" width="36" height="14" rx="7" fill="#1E1E1E" stroke="#C9A84C" stroke-width="0.5"/>
+            <text x="40" y="52" text-anchor="middle" fill="#C9A84C" font-size="6" font-family="sans-serif">Before</text>
+            <text x="22" y="80" fill="#EEE" font-size="16" font-weight="bold" font-family="serif">The</text>
+            <text x="22" y="100" fill="#EEE" font-size="16" font-weight="bold" font-family="serif">Problem</text>
+            <rect x="22" y="107" width="60" height="2" fill="#C9A84C"/>
+            <text x="22" y="124" fill="#888" font-size="7" font-family="sans-serif">Most apps</text>
+            <text x="22" y="136" fill="#888" font-size="7" font-family="sans-serif">overwhelm</text>
+            <text x="22" y="148" fill="#888" font-size="7" font-family="sans-serif">users with</text>
+            <text x="22" y="160" fill="#888" font-size="7" font-family="sans-serif">too much.</text>
+            <text x="75" y="228" text-anchor="middle" fill="#C9A84C" font-size="5" letter-spacing="1">D.M.J</text>
+
+            <!-- Slide 2 -->
+            <rect x="155" y="10" width="130" height="228" rx="10" fill="#0D0D0D" stroke="#C9A84C" stroke-width="1"/>
+            <text x="170" y="35" fill="#666" font-size="7" font-family="sans-serif">2 / 3</text>
+            <rect x="168" y="42" width="40" height="14" rx="7" fill="#1E1E1E" stroke="#C9A84C" stroke-width="0.5"/>
+            <text x="188" y="52" text-anchor="middle" fill="#C9A84C" font-size="6" font-family="sans-serif">During</text>
+            <text x="168" y="80" fill="#EEE" font-size="16" font-weight="bold" font-family="serif">The</text>
+            <text x="168" y="100" fill="#EEE" font-size="16" font-weight="bold" font-family="serif">Research</text>
+            <rect x="168" y="107" width="60" height="2" fill="#C9A84C"/>
+            <text x="168" y="124" fill="#888" font-size="7" font-family="sans-serif">12 user</text>
+            <text x="168" y="136" fill="#888" font-size="7" font-family="sans-serif">interviews.</text>
+            <text x="168" y="148" fill="#888" font-size="7" font-family="sans-serif">3 rounds of</text>
+            <text x="168" y="160" fill="#888" font-size="7" font-family="sans-serif">testing.</text>
+            <text x="220" y="228" text-anchor="middle" fill="#C9A84C" font-size="5" letter-spacing="1">D.M.J</text>
+
+            <!-- Slide 3 -->
+            <rect x="300" y="10" width="130" height="228" rx="10" fill="#0D0D0D" stroke="#C9A84C" stroke-width="1"/>
+            <text x="315" y="35" fill="#666" font-size="7" font-family="sans-serif">3 / 3</text>
+            <rect x="312" y="42" width="36" height="14" rx="7" fill="#C9A84C"/>
+            <text x="330" y="52" text-anchor="middle" fill="#0A0A0A" font-size="6" font-weight="bold" font-family="sans-serif">After</text>
+            <text x="315" y="80" fill="#EEE" font-size="16" font-weight="bold" font-family="serif">The</text>
+            <text x="315" y="100" fill="#C9A84C" font-size="16" font-weight="bold" font-family="serif">Solution</text>
+            <rect x="315" y="107" width="60" height="2" fill="#C9A84C"/>
+            <text x="315" y="124" fill="#888" font-size="7" font-family="sans-serif">Clean. Fast.</text>
+            <text x="315" y="136" fill="#888" font-size="7" font-family="sans-serif">Intuitive.</text>
+            <text x="315" y="150" fill="#C9A84C" font-size="9" font-weight="bold" font-family="sans-serif">+34%</text>
+            <text x="315" y="163" fill="#888" font-size="6" font-family="sans-serif">task completion</text>
+            <text x="365" y="228" text-anchor="middle" fill="#C9A84C" font-size="5" letter-spacing="1">D.M.J</text>
+          </svg>
+          <div class="project-overlay"><span class="overlay-text">VIEW ON IG</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">CAROUSEL · CASE STUDY · INSTAGRAM</div>
+          <div class="project-title">Design Process Carousel — Problem to Solution</div>
+          <div class="project-desc">3-slide Instagram carousel walking through a real UX process: problem definition, user research, and the final solution. Posted on @hardey_do2u.</div>
+          <div class="project-tags"><span class="ptag">CAROUSEL</span><span class="ptag">CASE STUDY</span><span class="ptag">UX PROCESS</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- EDUAFRIKA FEATURED CASE STUDY -->
+<section style="padding:6rem 4rem; background:#0B0F1A; border-top:1px solid rgba(255,255,255,0.06);">
+
+  <!-- section header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3.5rem;">
+    <div>
+      <div style="font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.18em; color:#E8A020; margin-bottom:0.75rem;">FEATURED CASE STUDY</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:900; color:#F5F0E8; line-height:1.1;">
+        EduAfrika — <em style="font-style:italic; color:#E8A020;">Full Case Study</em>
+      </h2>
+    </div>
+    <a href="https://eduafrika-adewumi.netlify.app" target="_blank"
+       style="font-family:'Space Mono',monospace; font-size:12px; letter-spacing:0.1em; color:#E8A020; border:1px solid #E8A020; padding:12px 24px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
+       onmouseover="this.style.background='#E8A020';this.style.color='#0B0F1A'"
+       onmouseout="this.style.background='transparent';this.style.color='#E8A020'">
+      VIEW CASE STUDY ↗
+    </a>
+  </div>
+
+  <!-- main card -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; background:#141824; border:1px solid rgba(247,243,236,0.06); border-radius:4px; overflow:hidden;">
+
+    <!-- left: visual -->
+    <div style="background:linear-gradient(135deg,#1a1030 0%,#0d2218 50%,#0B0F1A 100%); padding:3rem; display:flex; flex-direction:column; justify-content:space-between; min-height:480px; position:relative; overflow:hidden;">
+      <!-- subtle grid -->
+      <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(232,160,32,0.04) 59px,rgba(232,160,32,0.04) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(232,160,32,0.03) 59px,rgba(232,160,32,0.03) 60px);pointer-events:none;"></div>
+
+      <!-- logo -->
+      <div style="position:relative;z-index:2;">
+        <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#E8A020; margin-bottom:4px;">EduAfrika</div>
+        <div style="font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.14em; color:rgba(247,243,236,0.35);">E-LEARNING PLATFORM · AFRICA</div>
+      </div>
+
+      <!-- inline mini mockup -->
+      <div style="position:relative;z-index:2; background:#F7F3EC; border-radius:12px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,0.5); margin:1.5rem 0;">
+        <div style="height:28px; background:#EDE8DF; border-bottom:1px solid #DDD7CC; display:flex; align-items:center; padding:0 12px; gap:6px;">
+          <div style="width:9px;height:9px;border-radius:50%;background:#FF5F57;"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:#FEBC2E;"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:#28C840;"></div>
+        </div>
+        <div style="display:flex; height:200px;">
+          <!-- sidebar -->
+          <div style="width:130px;background:#0B0F1A;padding:14px 0;flex-shrink:0;">
+            <div style="font-family:'Playfair Display',serif;font-size:11px;color:#E8A020;padding:0 14px 12px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:8px;">EduAfrika</div>
+            <div style="padding:8px 14px;font-size:9px;color:#E8A020;background:rgba(232,160,32,0.1);border-left:2px solid #E8A020;">⌂ Dashboard</div>
+            <div style="padding:8px 14px;font-size:9px;color:rgba(247,243,236,0.3);">◈ My Courses</div>
+            <div style="padding:8px 14px;font-size:9px;color:rgba(247,243,236,0.3);">🔍 Explore</div>
+            <div style="padding:8px 14px;font-size:9px;color:rgba(247,243,236,0.3);">📥 Downloads</div>
+            <div style="padding:8px 14px;font-size:9px;color:rgba(247,243,236,0.3);">🏆 Certificates</div>
+          </div>
+          <!-- main -->
+          <div style="flex:1;background:#FAFAF8;padding:12px;">
+            <div style="font-size:9px;color:#888;margin-bottom:2px;">Good morning,</div>
+            <div style="font-size:11px;font-weight:700;color:#0B0F1A;margin-bottom:10px;">Amara Okonkwo 👋</div>
+            <!-- stats -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px;">
+              <div style="background:white;border:1px solid #EBEBEB;border-radius:5px;padding:6px;text-align:center;">
+                <div style="font-size:14px;font-weight:700;color:#E8A020;">6</div>
+                <div style="font-size:7px;color:#aaa;">Courses</div>
+              </div>
+              <div style="background:white;border:1px solid #EBEBEB;border-radius:5px;padding:6px;text-align:center;">
+                <div style="font-size:14px;font-weight:700;color:#3D7A6B;">82%</div>
+                <div style="font-size:7px;color:#aaa;">Progress</div>
+              </div>
+              <div style="background:white;border:1px solid #EBEBEB;border-radius:5px;padding:6px;text-align:center;">
+                <div style="font-size:14px;font-weight:700;color:#E8A020;">14🔥</div>
+                <div style="font-size:7px;color:#aaa;">Streak</div>
+              </div>
+            </div>
+            <!-- course rows -->
+            <div style="font-size:8px;font-weight:600;color:#0B0F1A;margin-bottom:6px;">Continue Learning</div>
+            <div style="display:flex;align-items:center;gap:7px;background:white;border:1px solid #EBEBEB;border-radius:5px;padding:7px;margin-bottom:5px;">
+              <div style="width:24px;height:24px;border-radius:5px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">📊</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:8px;font-weight:600;color:#0B0F1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Data Structures & Algorithms</div>
+                <div style="height:2px;background:#EBEBEB;border-radius:1px;margin-top:4px;"><div style="width:68%;height:100%;background:#5B21B6;border-radius:1px;"></div></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;background:white;border:1px solid #EBEBEB;border-radius:5px;padding:7px;">
+              <div style="width:24px;height:24px;border-radius:5px;background:#C8E6DF;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">🌍</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:8px;font-weight:600;color:#0B0F1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">African Economic History</div>
+                <div style="height:2px;background:#EBEBEB;border-radius:1px;margin-top:4px;"><div style="width:32%;height:100%;background:#3D7A6B;border-radius:1px;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- outcome badges -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; position:relative;z-index:2;">
+        <div style="background:rgba(232,160,32,0.12); border:1px solid rgba(232,160,32,0.3); padding:8px 14px; border-radius:2px;">
+          <div style="font-family:'Playfair Display',serif; font-size:1.4rem; color:#E8A020; line-height:1;">94%</div>
+          <div style="font-size:10px; color:rgba(247,243,236,0.4); margin-top:2px;">Satisfaction</div>
+        </div>
+        <div style="background:rgba(61,122,107,0.12); border:1px solid rgba(61,122,107,0.3); padding:8px 14px; border-radius:2px;">
+          <div style="font-family:'Playfair Display',serif; font-size:1.4rem; color:#3D7A6B; line-height:1;">87</div>
+          <div style="font-size:10px; color:rgba(247,243,236,0.4); margin-top:2px;">SUS Score</div>
+        </div>
+        <div style="background:rgba(91,33,182,0.12); border:1px solid rgba(91,33,182,0.3); padding:8px 14px; border-radius:2px;">
+          <div style="font-family:'Playfair Display',serif; font-size:1.4rem; color:#9B6FE0; line-height:1;">2.3×</div>
+          <div style="font-size:10px; color:rgba(247,243,236,0.4); margin-top:2px;">Enrolment</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: info -->
+    <div style="padding:3rem; display:flex; flex-direction:column; justify-content:space-between;">
+      <div>
+        <div style="font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.14em; color:#E8A020; margin-bottom:1rem;">UX RESEARCH · UI DESIGN · CASE STUDY</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:#F5F0E8; margin-bottom:1rem; line-height:1.2;">E-learning platform built for Africa's 6M+ university students</h3>
+        <p style="font-size:14px; color:rgba(247,243,236,0.5); line-height:1.8; margin-bottom:1.75rem; font-weight:300;">
+          EduAfrika reimagines online education from the ground up — offline-first, mobile-native, and culturally resonant. Global platforms assumed stable internet and credit cards. This project started by throwing both assumptions away.
+        </p>
+
+        <!-- what's inside -->
+        <div style="font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(247,243,236,0.35); margin-bottom:0.75rem;">WHAT'S INSIDE THIS CASE STUDY</div>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(247,243,236,0.06);">
+            <div style="width:6px;height:6px;border-radius:50%;background:#E8A020;flex-shrink:0;"></div>
+            <span style="font-size:13px;color:rgba(247,243,236,0.55);">14 user interviews across Nigeria, Ghana & Kenya</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(247,243,236,0.06);">
+            <div style="width:6px;height:6px;border-radius:50%;background:#E8A020;flex-shrink:0;"></div>
+            <span style="font-size:13px;color:rgba(247,243,236,0.55);">Full UX process — research → wireframe → prototype → test</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(247,243,236,0.06);">
+            <div style="width:6px;height:6px;border-radius:50%;background:#E8A020;flex-shrink:0;"></div>
+            <span style="font-size:13px;color:rgba(247,243,236,0.55);">3 key design decisions with measured impact</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(247,243,236,0.06);">
+            <div style="width:6px;height:6px;border-radius:50%;background:#3D7A6B;flex-shrink:0;"></div>
+            <span style="font-size:13px;color:rgba(247,243,236,0.55);">5 high-fidelity screens — dashboard, explore, player, onboarding, certificate</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:10px 0;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#3D7A6B;flex-shrink:0;"></div>
+            <span style="font-size:13px;color:rgba(247,243,236,0.55);">3 rounds of usability testing — SUS score rose from 64 → 87</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- tags -->
+        <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:1.75rem;">
+          <span style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(232,160,32,0.3);color:#E8A020;">FIGMA</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(247,243,236,0.12);color:rgba(247,243,236,0.4);">UX RESEARCH</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(247,243,236,0.12);color:rgba(247,243,236,0.4);">DESIGN SYSTEM</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(247,243,236,0.12);color:rgba(247,243,236,0.4);">PROTOTYPING</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(247,243,236,0.12);color:rgba(247,243,236,0.4);">EDTECH</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(61,122,107,0.4);color:#3D7A6B;">AFRICA</span>
+        </div>
+
+        <!-- CTA buttons -->
+        <div style="display:flex; gap:12px;">
+          <a href="https://eduafrika-adewumi.netlify.app" target="_blank"
+             style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.1em;padding:14px 28px;background:#E8A020;color:#0B0F1A;text-decoration:none;font-weight:700;transition:all 0.2s;flex:1;text-align:center;"
+             onmouseover="this.style.background='#F5B840'"
+             onmouseout="this.style.background='#E8A020'">
+            READ FULL CASE STUDY →
+          </a>
+          <a href="#contact"
+             style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.1em;padding:14px 24px;border:1px solid rgba(247,243,236,0.2);color:rgba(247,243,236,0.6);text-decoration:none;transition:all 0.2s;"
+             onmouseover="this.style.borderColor='#E8A020';this.style.color='#E8A020'"
+             onmouseout="this.style.borderColor='rgba(247,243,236,0.2)';this.style.color='rgba(247,243,236,0.6)'">
+            HIRE ME
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="exp-section reveal" id="experience">
+  <h2 class="exp-heading">Work <em>Experience</em></h2>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-year">JAN 2023 — PRESENT</div>
+      <div>
+        <div class="exp-role">UI/UX Designer & Social Media Monitor</div>
+        <div class="exp-company">HealthNest Digital · Remote / Abuja</div>
+        <div class="exp-details">Designing UI for a maternity wellness app (50K+ users), monitoring brand sentiment across 5 platforms, and building moderation workflows that cut violation response time by 48%.</div>
+      </div>
+      <div class="exp-num">01</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-year">MAR 2021 — DEC 2022</div>
+      <div>
+        <div class="exp-role">UI/UX Designer</div>
+        <div class="exp-company">CreativeHub Agency · Abuja</div>
+        <div class="exp-details">End-to-end design for 10+ client products. Led user research, built design systems, and reduced onboarding drop-off by 27% for a flagship e-commerce client.</div>
+      </div>
+      <div class="exp-num">02</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-year">JUN 2020 — FEB 2021</div>
+      <div>
+        <div class="exp-role">Junior UI Designer & Content Moderator</div>
+        <div class="exp-company">SocialSpark Nigeria · Lagos</div>
+        <div class="exp-details">Visual design support and content moderation for a parenting platform. Reviewed UGC for policy compliance and compiled monthly engagement performance reports.</div>
+      </div>
+      <div class="exp-num">03</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section reveal" id="process">
+  <div class="section-label">HOW I WORK</div>
+  <h2 class="process-heading">My Design Process</h2>
+  <div class="process-grid">
+    <div class="process-step">
+      <span class="ps-num">01 / DISCOVER</span>
+      <div class="ps-title">Research & Empathize</div>
+      <div class="ps-desc">User interviews, competitive analysis, and social listening to deeply understand the problem space before touching a tool.</div>
+    </div>
+    <div class="process-step">
+      <span class="ps-num">02 / DEFINE</span>
+      <div class="ps-title">Frame the Problem</div>
+      <div class="ps-desc">Synthesize research into personas, user journeys, and a precise problem statement that guides every design decision.</div>
+    </div>
+    <div class="process-step">
+      <span class="ps-num">03 / IDEATE</span>
+      <div class="ps-title">Explore Solutions</div>
+      <div class="ps-desc">Rapid sketching, information architecture, and low-fidelity wireframes. Volume before polish at this stage.</div>
+    </div>
+    <div class="process-step">
+      <span class="ps-num">04 / PROTOTYPE</span>
+      <div class="ps-title">Build to Learn</div>
+      <div class="ps-desc">High-fidelity prototypes in Figma or Adobe XD, with interactive flows ready for user testing and stakeholder review.</div>
+    </div>
+    <div class="process-step">
+      <span class="ps-num">05 / TEST</span>
+      <div class="ps-title">Validate & Iterate</div>
+      <div class="ps-desc">Usability tests, A/B experiments, and heatmap analysis. Design is never done — only improved.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section reveal">
+  <div class="section-label">TESTIMONIALS</div>
+  <h2 class="process-heading">What Clients Say</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"Adewumi has an exceptional eye for detail. He transformed our maternity app from confusing to genuinely delightful — our retention metrics jumped almost immediately after launch."</div>
+      <div class="t-author">Chisom Okafor</div>
+      <div class="t-role">CPO · HEALTHNEST DIGITAL</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"He doesn't just design screens — he thinks about the whole experience. Our brand sentiment improved 40% after Emmanuel redesigned our community moderation and monitoring workflow."</div>
+      <div class="t-author">Fatima Al-Hassan</div>
+      <div class="t-role">BRAND MANAGER · NURTURE GRACE</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"Working with Emmanuel is effortless. He communicates clearly, delivers on time, and always brings something unexpected — a creative edge combined with rigorous UX thinking."</div>
+      <div class="t-author">David Eze</div>
+      <div class="t-role">CEO · CREATIVEHUB AGENCY</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section reveal" id="contact">
+  <div>
+    <div class="section-label">GET IN TOUCH</div>
+    <h2 class="contact-heading">Let's build something<br><em>great together.</em></h2>
+    <p class="contact-sub">Open to full-time roles, freelance projects, and collaborations. Based in Abuja — available globally for remote work.</p>
+    <div class="contact-info">
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </div>
+        aadedotun80@gmail.com
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        </div>
+        +234 907 922 6778 · +234 906 627 2374
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        Abuja, Nigeria (Open to Remote)
+      </div>
+    </div>
+  </div>
+  <div>
+    <form class="contact-form" onsubmit="return false;">
+      <div class="form-row">
+        <input type="text" class="form-input" placeholder="Your name">
+        <input type="email" class="form-input" placeholder="Email address">
+      </div>
+      <input type="text" class="form-input" placeholder="Subject">
+      <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+      <button class="form-btn" type="submit">SEND MESSAGE →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Adewumi Adedotun Emmanuel</div>
+  <div class="social-links">
+    <a href="#">LINKEDIN</a>
+    <a href="#">BEHANCE</a>
+    <a href="#">DRIBBBLE</a>
+    <a href="#">TWITTER</a>
+  </div>
+  <div class="footer-copy">© 2024 · ALL RIGHTS RESERVED</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .project-card, .process-step').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px'; cursor.style.height = '20px';
+      ring.style.width = '50px'; ring.style.height = '50px';
+      ring.style.borderColor = 'var(--accent)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px'; cursor.style.height = '10px';
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.borderColor = 'var(--ink)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav active state
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.background = window.scrollY > 50 ? 'rgba(245,240,232,0.95)' : 'rgba(245,240,232,0.85)';
+  });
+
+  // 3D Card tilt effect on project cards
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `translateY(-6px) rotateY(${x * 12}deg) rotateX(${-y * 10}deg)`;
+      card.style.transition = 'transform 0.1s ease, box-shadow 0.35s';
+      card.style.boxShadow = `${-x * 20}px ${y * 20}px 40px rgba(13,13,13,0.18)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0) rotateY(0) rotateX(0)';
+      card.style.transition = 'transform 0.5s ease, box-shadow 0.5s';
+      card.style.boxShadow = '';
+    });
+    card.style.transformStyle = 'preserve-3d';
+    card.style.willChange = 'transform';
+  });
+
+  // 3D tilt on process steps
+  document.querySelectorAll('.process-step').forEach(step => {
+    step.addEventListener('mousemove', e => {
+      const r = step.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      step.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 6}deg) scale(1.02)`;
+      step.style.transition = 'transform 0.1s ease';
+    });
+    step.addEventListener('mouseleave', () => {
+      step.style.transform = 'rotateY(0) rotateX(0) scale(1)';
+      step.style.transition = 'transform 0.5s ease';
+    });
+    step.style.transformStyle = 'preserve-3d';
+  });
+</script>
+
+<!-- THREE.JS 3D HERO SCENE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const canvas = document.getElementById('hero3d');
+  if (!canvas) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 0, 6);
+
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Lights
+  const amb = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(amb);
+  const dir1 = new THREE.DirectionalLight(0xC8502A, 1.8);
+  dir1.position.set(3, 4, 5);
+  scene.add(dir1);
+  const dir2 = new THREE.DirectionalLight(0x2A6FC8, 1.2);
+  dir2.position.set(-4, -2, 3);
+  scene.add(dir2);
+  const pt = new THREE.PointLight(0xffffff, 0.6, 20);
+  pt.position.set(0, 3, 3);
+  scene.add(pt);
+
+  // Main icosahedron (wireframe outer shell)
+  const icoGeo = new THREE.IcosahedronGeometry(1.8, 1);
+  const icoMat = new THREE.MeshStandardMaterial({
+    color: 0x1A4A8A,
+    metalness: 0.7,
+    roughness: 0.2,
+    transparent: true,
+    opacity: 0.85,
+  });
+  const ico = new THREE.Mesh(icoGeo, icoMat);
+  scene.add(ico);
+
+  // Wireframe overlay
+  const wireMat = new THREE.MeshBasicMaterial({
+    color: 0xC8502A,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.35
+  });
+  const wire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.82, 1), wireMat);
+  scene.add(wire);
+
+  // Inner glowing sphere
+  const sphereGeo = new THREE.SphereGeometry(0.7, 32, 32);
+  const sphereMat = new THREE.MeshStandardMaterial({
+    color: 0xC8502A,
+    metalness: 0.9,
+    roughness: 0.1,
+    emissive: 0xC8502A,
+    emissiveIntensity: 0.3,
+  });
+  const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+  scene.add(sphere);
+
+  // Orbiting small satellites
+  const satellites = [];
+  const satPositions = [
+    [2.5, 0.5, 0], [-2.2, -0.8, 0.5], [0.5, 2.4, -0.3],
+    [-0.3, -2.5, 0.2], [1.8, -1.6, 0.6], [-1.9, 1.5, -0.4]
+  ];
+  satPositions.forEach((pos, i) => {
+    const size = 0.06 + Math.random() * 0.1;
+    const g = i % 2 === 0
+      ? new THREE.OctahedronGeometry(size)
+      : new THREE.TetrahedronGeometry(size);
+    const m = new THREE.MeshStandardMaterial({
+      color: i % 2 === 0 ? 0xC8502A : 0x2A6FC8,
+      metalness: 0.8, roughness: 0.2,
+      emissive: i % 2 === 0 ? 0xC8502A : 0x2A6FC8,
+      emissiveIntensity: 0.5,
+    });
+    const mesh = new THREE.Mesh(g, m);
+    mesh.position.set(...pos);
+    mesh.userData = { basePos: [...pos], speed: 0.3 + Math.random() * 0.5, phase: Math.random() * Math.PI * 2 };
+    scene.add(mesh);
+    satellites.push(mesh);
+  });
+
+  // Floating particles
+  const partCount = 80;
+  const partGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(partCount * 3);
+  for (let i = 0; i < partCount; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 6;
+  }
+  partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const partMat = new THREE.PointsMaterial({ color: 0xC8502A, size: 0.04, transparent: true, opacity: 0.6 });
+  const particles = new THREE.Points(partGeo, partMat);
+  scene.add(particles);
+
+  // Mouse interaction
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.008;
+
+    // Main rotation + mouse parallax
+    ico.rotation.y = t * 0.4 + mouseX * 0.3;
+    ico.rotation.x = t * 0.2 + mouseY * 0.2;
+    wire.rotation.y = -t * 0.3 + mouseX * 0.25;
+    wire.rotation.x = t * 0.15 + mouseY * 0.15;
+
+    // Inner sphere counter-rotate + pulse
+    sphere.rotation.y = t * 0.6;
+    sphere.scale.setScalar(1 + Math.sin(t * 2) * 0.05);
+    sphere.material.emissiveIntensity = 0.3 + Math.sin(t * 3) * 0.15;
+
+    // Satellites orbit
+    satellites.forEach(s => {
+      const { basePos, speed, phase } = s.userData;
+      s.position.x = basePos[0] + Math.sin(t * speed + phase) * 0.4;
+      s.position.y = basePos[1] + Math.cos(t * speed + phase * 1.3) * 0.3;
+      s.position.z = basePos[2] + Math.sin(t * speed * 0.7 + phase) * 0.2;
+      s.rotation.y += 0.03;
+      s.rotation.x += 0.02;
+    });
+
+    // Drift particles slowly
+    particles.rotation.y = t * 0.05;
+    particles.rotation.x = t * 0.03;
+
+    // Camera gentle sway
+    camera.position.x = mouseX * 0.4;
+    camera.position.y = -mouseY * 0.3;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
+
+</body>
+</html>
