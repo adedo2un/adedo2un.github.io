@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian — Digital Banking Platform | Adewumi Adedotun Emmanuel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D0D0D;
+    --cream: #F5F0E8;
+    --accent: #C8502A;
+    --accent2: #2A6FC8;
+    --muted: #7A7060;
+    --line: rgba(13,13,13,0.12);
+    --card-bg: #FFFFFF;
+    --navy: #0B1E33;
+    --navy2: #13304F;
+    --gold: #F2D8A0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-back {
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+    color: var(--muted); text-decoration: none; display:flex; align-items:center; gap:8px;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  /* CASE HERO */
+  .case-hero {
+    min-height: 92vh;
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    padding-top: 80px; position: relative; overflow: hidden;
+    background: var(--navy);
+  }
+  .case-hero-left { padding: 7rem 4rem 4rem; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:2; }
+  .case-tag { font-family:'Space Mono', monospace; font-size:11px; letter-spacing:0.15em; color: var(--gold); margin-bottom:1.5rem; }
+  .case-title { font-family:'Playfair Display', serif; font-size: clamp(2.6rem, 4.6vw, 4.6rem); font-weight:900; line-height:1.05; color:#fff; margin-bottom:1.5rem; }
+  .case-title em { font-style:italic; color: var(--gold); }
+  .case-desc { font-size:1rem; line-height:1.8; color:rgba(255,255,255,0.65); max-width:480px; margin-bottom:2.5rem; }
+  .case-meta-row { display:flex; gap:2.5rem; flex-wrap:wrap; }
+  .case-meta-item .ml { font-family:'Space Mono', monospace; font-size:10px; letter-spacing:0.1em; color:rgba(255,255,255,0.4); margin-bottom:6px; }
+  .case-meta-item .mv { font-size:13.5px; color:#fff; font-weight:500; }
+
+  .case-hero-right { position:relative; overflow:hidden; }
+  #case3d { position:absolute; inset:0; width:100%; height:100%; }
+  .case-hero-right::after {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(circle at 60% 50%, rgba(242,216,160,0.08), transparent 60%);
+    pointer-events:none;
+  }
+
+  /* SECTIONS */
+  section.cs { padding: 6rem 4rem; border-top: 1px solid var(--line); }
+  .cs-label { font-family:'Space Mono', monospace; font-size:11px; letter-spacing:0.15em; color: var(--accent); margin-bottom:1rem; }
+  .cs-heading { font-family:'Playfair Display', serif; font-size:2.6rem; font-weight:900; color:var(--ink); line-height:1.15; margin-bottom:1.5rem; }
+  .cs-heading em { font-style:italic; color:var(--accent); }
+  .cs-text { font-size:1rem; line-height:1.9; color:var(--muted); max-width:680px; }
+  .cs-text + .cs-text { margin-top: 1.2rem; }
+
+  /* OVERVIEW GRID */
+  .overview-grid { display:grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items:start; }
+  .overview-list { list-style:none; display:flex; flex-direction:column; gap: 1rem; margin-top: 1.5rem; }
+  .overview-list li { font-size:14px; color:var(--ink); display:flex; gap:10px; align-items:flex-start; line-height:1.6; }
+  .overview-list li::before { content:'—'; color:var(--accent); flex-shrink:0; }
+
+  /* METRICS BAND */
+  .metrics-band { background: var(--navy); padding: 5rem 4rem; display:grid; grid-template-columns: repeat(4,1fr); gap:2px; background-color: var(--navy); }
+  .metric-box { padding: 1rem 2rem; border-left: 1px solid rgba(255,255,255,0.1); }
+  .metric-box:first-child { border-left: none; }
+  .metric-num { font-family:'Playfair Display', serif; font-size:3rem; font-weight:900; color:var(--gold); }
+  .metric-label { font-family:'Space Mono', monospace; font-size:10.5px; letter-spacing:0.05em; color:rgba(255,255,255,0.55); margin-top:0.6rem; line-height:1.5; }
+
+  /* PROCESS (reuse pattern) */
+  .process-grid { display:grid; grid-template-columns: repeat(5,1fr); gap:1px; background:var(--line); }
+  .process-step { background: var(--cream); padding: 2.2rem 1.6rem; transition: background 0.2s; }
+  .process-step:hover { background: var(--ink); color: var(--cream); }
+  .process-step:hover .ps-num, .process-step:hover .ps-title, .process-step:hover .ps-desc { color: inherit; }
+  .ps-num { font-family:'Space Mono', monospace; font-size:11px; color:var(--accent); letter-spacing:0.1em; margin-bottom:1.2rem; display:block; }
+  .ps-title { font-family:'Playfair Display', serif; font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:0.6rem; transition:color 0.2s; }
+  .ps-desc { font-size:12.5px; color:var(--muted); line-height:1.65; transition:color 0.2s; }
+
+  /* SCREENS */
+  .screen-block { margin-bottom: 4rem; }
+  .screen-block:last-child { margin-bottom: 0; }
+  .screen-tag { font-family:'Space Mono', monospace; font-size:10.5px; letter-spacing:0.1em; color:var(--accent); margin-bottom:0.8rem; }
+  .screen-title { font-family:'Playfair Display', serif; font-size:1.5rem; font-weight:700; color:var(--ink); margin-bottom:0.6rem; }
+  .screen-desc { font-size:13.5px; color:var(--muted); line-height:1.7; max-width:600px; margin-bottom:1.6rem; }
+  .screen-frame { border:1px solid var(--line); background:var(--card-bg); overflow:hidden; box-shadow: 0 30px 70px rgba(13,13,13,0.08); }
+  .screen-frame svg { width:100%; height:auto; display:block; }
+
+  /* OUTCOME / CLOSE */
+  .close-section { background: var(--ink); color: var(--cream); padding: 6rem 4rem; text-align:center; }
+  .close-heading { font-family:'Playfair Display', serif; font-size: clamp(2rem, 3.6vw, 3.2rem); font-weight:900; line-height:1.2; margin-bottom:1.5rem; }
+  .close-heading em { font-style:italic; color: var(--gold); }
+  .close-text { font-size:14.5px; color:rgba(245,240,232,0.6); max-width:560px; margin: 0 auto 2.5rem; line-height:1.8; }
+  .close-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .btn-gold { background: var(--gold); color: var(--navy); padding:14px 32px; font-size:13px; font-family:'Space Mono', monospace; letter-spacing:0.08em; text-decoration:none; border:1px solid var(--gold); transition:all 0.25s; }
+  .btn-gold:hover { background:transparent; color:var(--gold); }
+  .btn-line { background:transparent; color: var(--cream); padding:14px 32px; font-size:13px; font-family:'Space Mono', monospace; letter-spacing:0.08em; text-decoration:none; border:1px solid rgba(245,240,232,0.3); transition:all 0.25s; }
+  .btn-line:hover { border-color: var(--cream); }
+
+  /* FOOTER */
+  footer { padding:2rem 4rem; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background: var(--cream); }
+  .footer-name { font-family:'Playfair Display', serif; font-size:1rem; font-weight:700; color:var(--ink); }
+  .footer-copy { font-family:'Space Mono', monospace; font-size:11px; color:var(--muted); letter-spacing:0.08em; }
+
+  .reveal { opacity:0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  @media (max-width: 900px) {
+    .case-hero { grid-template-columns: 1fr; min-height:auto; }
+    .case-hero-right { height: 320px; }
+    .overview-grid { grid-template-columns: 1fr; }
+    .metrics-band { grid-template-columns: repeat(2,1fr); }
+    .process-grid { grid-template-columns: repeat(2,1fr); }
+    nav { padding: 1.2rem 1.5rem; }
+    section.cs, .close-section { padding: 4rem 1.5rem; }
+    .case-hero-left { padding: 7rem 1.5rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ADE<span>.</span></a>
+  <a href="index.html#work" class="nav-back">&larr; ALL PROJECTS</a>
+</nav>
+
+<!-- CASE HERO -->
+<section class="case-hero">
+  <div class="case-hero-left">
+    <div class="case-tag">FINTECH CASE STUDY</div>
+    <h1 class="case-title">Meridian<br><em>Digital Banking</em></h1>
+    <p class="case-desc">
+      A complete onboarding and account experience for a digital-first bank — designed to make identity verification feel safe and fast instead of bureaucratic, and everyday banking feel calm instead of cluttered.
+    </p>
+    <div class="case-meta-row">
+      <div class="case-meta-item"><div class="ml">ROLE</div><div class="mv">Lead UI/UX Designer</div></div>
+      <div class="case-meta-item"><div class="ml">TIMELINE</div><div class="mv">10 Weeks</div></div>
+      <div class="case-meta-item"><div class="ml">PLATFORM</div><div class="mv">Web &amp; Mobile</div></div>
+      <div class="case-meta-item"><div class="ml">TOOLS</div><div class="mv">Figma · FigJam</div></div>
+    </div>
+  </div>
+  <div class="case-hero-right">
+    <canvas id="case3d"></canvas>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="cs reveal">
+  <div class="overview-grid">
+    <div>
+      <div class="cs-label">OVERVIEW</div>
+      <h2 class="cs-heading">Banking that earns<br><em>quiet confidence.</em></h2>
+      <p class="cs-text">Meridian was building a digital-only bank account aimed at freelancers and small business owners — people who needed a serious financial tool, not a flashy consumer app. The brief was to design an experience that felt secure and credible on day one, without the onboarding friction that causes most digital banks to lose new sign-ups before they ever see their first dashboard.</p>
+      <p class="cs-text">I led the end-to-end design: mapping the verification flow, designing the visual system, and building the core banking screens — account overview, transactions, and transfers.</p>
+    </div>
+    <div>
+      <div class="cs-label">THE BRIEF, IN THREE PARTS</div>
+      <ul class="overview-list">
+        <li>Cut onboarding abandonment without weakening identity verification or compliance requirements.</li>
+        <li>Design a visual language that reads as trustworthy and established — classic, not trendy.</li>
+        <li>Give users a dashboard that surfaces what matters (balance, recent activity) without burying it in navigation.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<div class="metrics-band">
+  <div class="metric-box reveal">
+    <div class="metric-num">42%</div>
+    <div class="metric-label">FASTER ONBOARDING<br>COMPLETION TIME</div>
+  </div>
+  <div class="metric-box reveal">
+    <div class="metric-num">−36%</div>
+    <div class="metric-label">DROP-OFF DURING<br>IDENTITY VERIFICATION</div>
+  </div>
+  <div class="metric-box reveal">
+    <div class="metric-num">4.7&nbsp;<span style="font-size:1.6rem;">/5</span></div>
+    <div class="metric-label">AVERAGE USABILITY<br>SCORE IN TESTING</div>
+  </div>
+  <div class="metric-box reveal">
+    <div class="metric-num">28%</div>
+    <div class="metric-label">FEWER SUPPORT TICKETS<br>RELATED TO SIGN-UP</div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="cs reveal">
+  <div class="cs-label">PROCESS</div>
+  <h2 class="cs-heading">How the work<br><em>came together.</em></h2>
+</section>
+<div class="process-grid">
+  <div class="process-step reveal">
+    <span class="ps-num">01</span>
+    <div class="ps-title">Discovery</div>
+    <div class="ps-desc">Audited 6 competitor banking apps and ran interviews with 9 freelancers about why they'd abandoned a bank sign-up before.</div>
+  </div>
+  <div class="process-step reveal">
+    <span class="ps-num">02</span>
+    <div class="ps-title">Flow Mapping</div>
+    <div class="ps-desc">Rebuilt the KYC journey as a single linear path with visible progress, removing two redundant verification steps.</div>
+  </div>
+  <div class="process-step reveal">
+    <span class="ps-num">03</span>
+    <div class="ps-title">Visual System</div>
+    <div class="ps-desc">Defined a navy-and-gold palette and a serif/sans pairing to read as established and credible, not start-up trendy.</div>
+  </div>
+  <div class="process-step reveal">
+    <span class="ps-num">04</span>
+    <div class="ps-title">Prototyping</div>
+    <div class="ps-desc">Built interactive flows in Figma for onboarding, dashboard, and transfers, ready for moderated usability sessions.</div>
+  </div>
+  <div class="process-step reveal">
+    <span class="ps-num">05</span>
+    <div class="ps-title">Testing &amp; Iteration</div>
+    <div class="ps-desc">Ran 5 rounds of usability testing; reworked the verification progress indicator after two rounds of confusion.</div>
+  </div>
+</div>
+
+<!-- KEY SCREENS -->
+<section class="cs reveal">
+  <div class="cs-label">KEY SCREENS</div>
+  <h2 class="cs-heading">A closer look<br><em>at the work.</em></h2>
+
+  <div style="margin-top:3.5rem;">
+
+    <!-- SCREEN 1: ONBOARDING -->
+    <div class="screen-block">
+      <div class="screen-tag">STEP 1 OF 3</div>
+      <div class="screen-title">Identity Verification, Reframed</div>
+      <p class="screen-desc">The original flow asked for documents before explaining why. The redesign leads with a visible 3-step tracker and plain-language reasoning at every step, so users always know where they are and why it matters.</p>
+      <div class="screen-frame">
+        <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1200" height="500" fill="#FAF7F0"/>
+          <!-- top progress -->
+          <rect x="0" y="0" width="1200" height="70" fill="#0B1E33"/>
+          <text x="60" y="42" fill="white" font-size="16" font-weight="bold" font-family="serif">Meridian</text>
+          <circle cx="500" cy="35" r="14" fill="#F2D8A0"/>
+          <text x="500" y="40" text-anchor="middle" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">1</text>
+          <line x1="514" y1="35" x2="580" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+          <circle cx="600" cy="35" r="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+          <text x="600" y="40" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif">2</text>
+          <line x1="614" y1="35" x2="680" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+          <circle cx="700" cy="35" r="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+          <text x="700" y="40" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif">3</text>
+          <!-- main content -->
+          <text x="600" y="150" text-anchor="middle" fill="#0B1E33" font-size="30" font-weight="bold" font-family="serif">Let's verify it's really you</text>
+          <text x="600" y="180" text-anchor="middle" fill="#7A7060" font-size="13" font-family="sans-serif">This keeps your account secure and is required by financial regulation — takes about 2 minutes.</text>
+          <!-- doc upload card -->
+          <rect x="400" y="220" width="400" height="160" rx="10" fill="white" stroke="#E5DFD0" stroke-width="1.5"/>
+          <rect x="430" y="248" width="60" height="44" rx="6" fill="#EAF3FB"/>
+          <text x="460" y="274" text-anchor="middle" fill="#2A6FC8" font-size="18" font-family="sans-serif">🪪</text>
+          <text x="505" y="262" fill="#0B1E33" font-size="13" font-weight="bold" font-family="sans-serif">Upload Government ID</text>
+          <text x="505" y="280" fill="#9A9A9A" font-size="10" font-family="sans-serif">Passport, driver's license, or national ID</text>
+          <rect x="430" y="305" width="340" height="42" rx="6" fill="#0B1E33"/>
+          <text x="600" y="330" text-anchor="middle" fill="#F2D8A0" font-size="11" font-weight="bold" font-family="sans-serif">Take a Photo</text>
+          <text x="600" y="362" text-anchor="middle" fill="#9A9A9A" font-size="9" font-family="sans-serif">Your data is encrypted and never shared with third parties.</text>
+          <text x="600" y="440" text-anchor="middle" fill="#9A9A9A" font-size="9" font-family="monospace" letter-spacing="2">STEP 1 OF 3 · ID VERIFICATION</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: DASHBOARD -->
+    <div class="screen-block">
+      <div class="screen-tag">CORE EXPERIENCE</div>
+      <div class="screen-title">An Account Overview That Leads With What Matters</div>
+      <p class="screen-desc">Balance and recent activity sit above the fold with no scrolling. Quick actions (transfer, pay, request) are one tap away instead of buried in a menu.</p>
+      <div class="screen-frame">
+        <svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1200" height="560" fill="#FAF7F0"/>
+          <!-- sidebar -->
+          <rect x="0" y="0" width="220" height="560" fill="#0B1E33"/>
+          <text x="40" y="50" fill="white" font-size="18" font-weight="bold" font-family="serif">Meridian</text>
+          <rect x="30" y="90" width="160" height="34" rx="6" fill="rgba(242,216,160,0.15)"/>
+          <text x="48" y="111" fill="#F2D8A0" font-size="11" font-weight="bold" font-family="sans-serif">⌂  Overview</text>
+          <text x="48" y="155" fill="rgba(255,255,255,0.55)" font-size="11" font-family="sans-serif">↔  Transfers</text>
+          <text x="48" y="195" fill="rgba(255,255,255,0.55)" font-size="11" font-family="sans-serif">▤  Statements</text>
+          <text x="48" y="235" fill="rgba(255,255,255,0.55)" font-size="11" font-family="sans-serif">⚙  Settings</text>
+          <!-- top bar -->
+          <text x="260" y="55" fill="#0B1E33" font-size="22" font-weight="bold" font-family="serif">Good afternoon, Adeola</text>
+          <text x="260" y="78" fill="#9A9A9A" font-size="11" font-family="sans-serif">Wednesday, March 4</text>
+          <!-- balance card -->
+          <rect x="260" y="110" width="430" height="170" rx="10" fill="#13304F"/>
+          <text x="290" y="148" fill="rgba(255,255,255,0.55)" font-size="11" font-family="sans-serif" letter-spacing="1">TOTAL BALANCE</text>
+          <text x="290" y="195" fill="white" font-size="38" font-weight="bold" font-family="serif">$48,920.40</text>
+          <text x="290" y="222" fill="#7FD9A8" font-size="12" font-family="sans-serif">▲ 12.4% vs. last month</text>
+          <rect x="290" y="240" width="100" height="26" rx="13" fill="#F2D8A0"/>
+          <text x="340" y="257" text-anchor="middle" fill="#0B1E33" font-size="10" font-weight="bold" font-family="sans-serif">+ Transfer</text>
+          <rect x="400" y="240" width="90" height="26" rx="13" fill="transparent" stroke="rgba(255,255,255,0.3)"/>
+          <text x="445" y="257" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">Request</text>
+          <!-- chart card -->
+          <rect x="710" y="110" width="230" height="170" rx="10" fill="white" stroke="#E5DFD0" stroke-width="1"/>
+          <text x="732" y="138" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">Spending</text>
+          <polyline points="732,230 760,210 788,222 816,188 844,202 872,165 900,178" fill="none" stroke="#C8502A" stroke-width="2.5"/>
+          <text x="732" y="258" fill="#9A9A9A" font-size="9" font-family="sans-serif">Last 7 weeks</text>
+          <!-- transactions -->
+          <rect x="260" y="305" width="680" height="225" rx="10" fill="white" stroke="#E5DFD0" stroke-width="1"/>
+          <text x="290" y="338" fill="#0B1E33" font-size="13" font-weight="bold" font-family="sans-serif">Recent Transactions</text>
+          <line x1="290" y1="352" x2="910" y2="352" stroke="#EFEAE0" stroke-width="1"/>
+          <circle cx="312" cy="382" r="14" fill="#EDE4CC"/>
+          <text x="338" y="380" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">Lagos Co-working Hub</text>
+          <text x="338" y="395" fill="#9A9A9A" font-size="9" font-family="sans-serif">Today · 9:42 AM</text>
+          <text x="900" y="384" text-anchor="end" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">-$84.00</text>
+          <circle cx="312" cy="430" r="14" fill="#DCEFE2"/>
+          <text x="338" y="428" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">Payroll Deposit</text>
+          <text x="338" y="443" fill="#9A9A9A" font-size="9" font-family="sans-serif">Yesterday · 6:00 AM</text>
+          <text x="900" y="432" text-anchor="end" fill="#1D9E62" font-size="11" font-weight="bold" font-family="sans-serif">+$3,200.00</text>
+          <circle cx="312" cy="478" r="14" fill="#EDE4CC"/>
+          <text x="338" y="476" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">Netflix Subscription</text>
+          <text x="338" y="491" fill="#9A9A9A" font-size="9" font-family="sans-serif">Mar 2 · 11:14 PM</text>
+          <text x="900" y="480" text-anchor="end" fill="#0B1E33" font-size="11" font-weight="bold" font-family="sans-serif">-$15.99</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: TRANSFER -->
+    <div class="screen-block">
+      <div class="screen-tag">CORE EXPERIENCE</div>
+      <div class="screen-title">Transfers Without Second-Guessing</div>
+      <p class="screen-desc">Recipient, amount, and a clear confirmation step are isolated on their own screens — reducing the misdirected-transfer errors that came up repeatedly in early usability testing.</p>
+      <div class="screen-frame">
+        <svg viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1200" height="460" fill="#FAF7F0"/>
+          <rect x="0" y="0" width="1200" height="64" fill="#0B1E33"/>
+          <text x="60" y="40" fill="white" font-size="15" font-weight="bold" font-family="serif">← Send Money</text>
+          <!-- recipient card -->
+          <rect x="350" y="110" width="500" height="80" rx="10" fill="white" stroke="#E5DFD0" stroke-width="1"/>
+          <circle cx="392" cy="150" r="18" fill="#EAF3FB"/>
+          <text x="392" y="155" text-anchor="middle" fill="#2A6FC8" font-size="12" font-weight="bold" font-family="sans-serif">TF</text>
+          <text x="425" y="145" fill="#0B1E33" font-size="13" font-weight="bold" font-family="sans-serif">Tunde Folarin</text>
+          <text x="425" y="163" fill="#9A9A9A" font-size="10" font-family="sans-serif">Meridian Account ····4821</text>
+          <text x="780" y="155" fill="#C8502A" font-size="10" font-family="sans-serif">Change</text>
+          <!-- amount -->
+          <text x="600" y="260" text-anchor="middle" fill="#0B1E33" font-size="46" font-weight="bold" font-family="serif">$250.00</text>
+          <text x="600" y="288" text-anchor="middle" fill="#9A9A9A" font-size="11" font-family="sans-serif">Available balance: $48,920.40</text>
+          <!-- note -->
+          <rect x="400" y="315" width="400" height="44" rx="8" fill="white" stroke="#E5DFD0" stroke-width="1"/>
+          <text x="420" y="341" fill="#9A9A9A" font-size="11" font-family="sans-serif">Add a note (optional)</text>
+          <!-- confirm -->
+          <rect x="400" y="380" width="400" height="48" rx="8" fill="#0B1E33"/>
+          <text x="600" y="409" text-anchor="middle" fill="#F2D8A0" font-size="12" font-weight="bold" font-family="sans-serif">Review &amp; Confirm Transfer</text>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="close-section">
+  <h2 class="close-heading">Trust, designed<br><em>screen by screen.</em></h2>
+  <p class="close-text">Meridian is a sample case study built to demonstrate end-to-end fintech UX thinking — from flow architecture to visual system to measurable outcomes.</p>
+  <div class="close-btns">
+    <a href="index.html#work" class="btn-gold">VIEW MORE PROJECTS</a>
+    <a href="index.html#contact" class="btn-line">GET IN TOUCH</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Adewumi Adedotun Emmanuel</div>
+  <div class="footer-copy">© 2026 · ALL RIGHTS RESERVED</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+<!-- 3D HERO ACCENT: navy/gold banking motif -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const canvas = document.getElementById('case3d');
+  if (!canvas) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 0, 7);
+
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  const goldLight = new THREE.DirectionalLight(0xF2D8A0, 2.0);
+  goldLight.position.set(3, 4, 5);
+  scene.add(goldLight);
+  const blueLight = new THREE.DirectionalLight(0x2A6FC8, 1.0);
+  blueLight.position.set(-4, -2, 3);
+  scene.add(blueLight);
+
+  // Stacked coin tori — banking motif
+  const coins = [];
+  const coinMat = new THREE.MeshStandardMaterial({ color: 0xF2D8A0, metalness: 0.85, roughness: 0.25, emissive: 0x4A3A1A, emissiveIntensity: 0.2 });
+  for (let i = 0; i < 5; i++) {
+    const g = new THREE.TorusGeometry(1.3, 0.16, 16, 60);
+    const m = new THREE.Mesh(g, coinMat);
+    m.position.y = -1.0 + i * 0.32;
+    m.rotation.x = Math.PI / 2;
+    scene.add(m);
+    coins.push(m);
+  }
+
+  // Center shield (octahedron) — security motif
+  const shieldGeo = new THREE.OctahedronGeometry(0.85, 0);
+  const shieldMat = new THREE.MeshStandardMaterial({ color: 0x13304F, metalness: 0.6, roughness: 0.3, emissive: 0x2A6FC8, emissiveIntensity: 0.25 });
+  const shield = new THREE.Mesh(shieldGeo, shieldMat);
+  shield.position.set(0, 0.4, 1.4);
+  scene.add(shield);
+
+  // wireframe overlay on shield
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0xF2D8A0, wireframe: true, transparent: true, opacity: 0.4 });
+  const wire = new THREE.Mesh(new THREE.OctahedronGeometry(0.87, 0), wireMat);
+  wire.position.copy(shield.position);
+  scene.add(wire);
+
+  // floating particles
+  const partCount = 60;
+  const partGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(partCount * 3);
+  for (let i = 0; i < partCount; i++) {
+    positions[i*3] = (Math.random()-0.5) * 8;
+    positions[i*3+1] = (Math.random()-0.5) * 8;
+    positions[i*3+2] = (Math.random()-0.5) * 5;
+  }
+  partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const partMat = new THREE.PointsMaterial({ color: 0xF2D8A0, size: 0.035, transparent: true, opacity: 0.5 });
+  const particles = new THREE.Points(partGeo, partMat);
+  scene.add(particles);
+
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.008;
+
+    coins.forEach((c, i) => { c.rotation.z = t * 0.25 + i * 0.1; });
+
+    shield.rotation.y = t * 0.5;
+    wire.rotation.y = t * 0.5;
+    shield.position.y = 0.4 + Math.sin(t * 1.4) * 0.08;
+    wire.position.y = shield.position.y;
+
+    particles.rotation.y = t * 0.04;
+
+    camera.position.x = mouseX * 0.3;
+    camera.position.y = -mouseY * 0.2;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
+
+</body>
+</html>
