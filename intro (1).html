@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adewumi Adedotun Emmanuel — UI/UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #060912;
+    --cyan: #5EEAFF;
+    --violet: #9B6BFF;
+    --glass-border: rgba(255,255,255,0.14);
+    --text-dim: rgba(214,224,240,0.62);
+    --text: #EAF2FA;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{
+    width:100%; height:100%; overflow:hidden;
+    background: var(--bg);
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+  }
+  #canvas-wrap{ position:fixed; inset:0; z-index:1; }
+  canvas{ display:block; }
+
+  #vignette{
+    position:fixed; inset:0; z-index:2; pointer-events:none;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(2,4,10,0.55) 100%);
+  }
+  #grain{
+    position:fixed; inset:0; z-index:2; pointer-events:none; opacity:0.035; mix-blend-mode:overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .stage{ position:fixed; inset:0; z-index:5; display:flex; align-items:center; justify-content:center; }
+
+  .scene{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition: opacity 1.1s cubic-bezier(.22,.61,.36,1);
+  }
+  .scene.active{ opacity:1; pointer-events:auto; }
+
+  .eyebrow{
+    font-family:"Space Grotesk", sans-serif;
+    font-size: 12px; letter-spacing: 4px; text-transform:uppercase;
+    color: var(--cyan); margin-bottom: 18px; opacity:0.9;
+    display:flex; align-items:center; gap:10px; justify-content:center;
+  }
+  .eyebrow::before, .eyebrow::after{ content:""; width:22px; height:1px; background: var(--cyan); opacity:0.6; }
+
+  .glass{
+    background: linear-gradient(155deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: 0 8px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  /* ---------- SCENE 1 : TITLE ---------- */
+  #scene-title .glass{
+    padding: 64px 84px;
+    text-align:center;
+    max-width: 720px;
+    transform: translateY(14px) scale(0.97);
+    opacity:0;
+    transition: transform 1.3s cubic-bezier(.22,.9,.3,1), opacity 1.3s ease;
+  }
+  #scene-title.active .glass{ transform: translateY(0) scale(1); opacity:1; }
+  .name{
+    font-family:"Space Grotesk", sans-serif;
+    font-weight:600;
+    font-size: clamp(30px, 4.4vw, 52px);
+    letter-spacing: 0.5px;
+    line-height:1.12;
+    background: linear-gradient(95deg, #FFFFFF 10%, var(--cyan) 60%, var(--violet) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .role{
+    margin-top: 16px;
+    font-family:"Space Grotesk", sans-serif;
+    font-size: 16px; letter-spacing:2.5px; text-transform:uppercase; color: var(--text-dim);
+  }
+  .rule{ width:64px; height:1px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); margin: 26px auto; opacity:0.8; }
+  .tagline{ font-size:15.5px; color: var(--text-dim); font-weight:300; line-height:1.7; max-width:440px; margin:0 auto; }
+
+  /* ---------- SCENE 2 : SKILLS ---------- */
+  #scene-skills .inner{ display:flex; gap:26px; flex-wrap:wrap; justify-content:center; max-width: 980px; padding: 0 30px; }
+  .skill-card{
+    width: 270px; padding: 34px 28px;
+    opacity:0; transform: translateY(40px) rotateX(8deg);
+    transition: opacity .9s ease, transform .9s cubic-bezier(.22,.9,.3,1);
+  }
+  .scene.active .skill-card{ opacity:1; transform: translateY(0) rotateX(0); }
+  .scene.active .skill-card:nth-child(1){ transition-delay: .15s; }
+  .scene.active .skill-card:nth-child(2){ transition-delay: .38s; }
+  .scene.active .skill-card:nth-child(3){ transition-delay: .61s; }
+  .skill-num{ font-family:"Space Grotesk", sans-serif; font-size:12px; color: var(--violet); letter-spacing:2px; margin-bottom:14px; }
+  .skill-title{ font-family:"Space Grotesk", sans-serif; font-size:19px; font-weight:600; margin-bottom:10px; color:var(--text); }
+  .skill-desc{ font-size:13.5px; line-height:1.65; color: var(--text-dim); font-weight:300; }
+  #scene-skills .heading{ position:absolute; top: 14%; text-align:center; width:100%; }
+
+  /* ---------- SCENE 3 : STATEMENT ---------- */
+  #scene-statement .wrap{ max-width: 760px; text-align:center; padding: 0 30px; }
+  .statement{
+    font-family:"Space Grotesk", sans-serif;
+    font-style: italic; font-weight:500;
+    font-size: clamp(24px, 3.6vw, 40px);
+    line-height: 1.35; color: var(--text);
+    opacity:0; transform: scale(0.96);
+    transition: opacity 1.1s ease, transform 1.1s cubic-bezier(.22,.9,.3,1);
+  }
+  .scene.active .statement{ opacity:1; transform: scale(1); }
+  .statement em{ color: var(--cyan); font-style: italic; }
+
+  /* ---------- SCENE 4 : CONTACT ---------- */
+  #scene-contact .glass{
+    padding: 52px 60px; width: min(640px, 88vw);
+    transform: translateY(20px); opacity:0;
+    transition: transform 1.1s cubic-bezier(.22,.9,.3,1), opacity 1.1s ease;
+  }
+  #scene-contact.active .glass{ transform: translateY(0); opacity:1; }
+  .contact-head{ font-family:"Space Grotesk", sans-serif; font-size:26px; font-weight:600; margin-bottom:6px; }
+  .contact-sub{ font-size:13.5px; color: var(--text-dim); margin-bottom:30px; font-weight:300; }
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; }
+  .contact-item{ display:flex; flex-direction:column; gap:4px; border-bottom:1px solid rgba(255,255,255,0.09); padding-bottom:12px; }
+  .contact-label{ font-family:"Space Grotesk", sans-serif; font-size:10.5px; letter-spacing:2px; color: var(--cyan); text-transform:uppercase; }
+  .contact-value{ font-size:14.5px; color: var(--text); font-weight:400; word-break:break-word; }
+  .contact-value a{ color:inherit; text-decoration:none; border-bottom:1px solid transparent; }
+  .contact-value a:hover{ border-bottom-color: var(--cyan); }
+
+  .enter-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top: 30px;
+    font-family:"Space Grotesk", sans-serif;
+    font-size: 13px; letter-spacing: 1.5px; text-transform:uppercase;
+    color: var(--bg); text-decoration:none;
+    background: linear-gradient(95deg, var(--cyan), var(--violet));
+    padding: 13px 26px; border-radius: 999px;
+    box-shadow: 0 4px 24px rgba(94,234,255,0.25);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .enter-btn:hover{ transform: translateY(-2px); box-shadow: 0 8px 30px rgba(94,234,255,0.4); }
+
+  /* ---------- progress + skip ---------- */
+  #progress-track{
+    position:fixed; bottom: 28px; left:50%; transform:translateX(-50%);
+    width: 220px; height:2px; background: rgba(255,255,255,0.12); border-radius:2px; z-index:10; overflow:hidden;
+  }
+  #progress-fill{ height:100%; width:0%; background: linear-gradient(90deg, var(--cyan), var(--violet)); }
+  #hint{
+    position:fixed; bottom: 44px; left:50%; transform:translateX(-50%);
+    font-family:"Space Grotesk", sans-serif; font-size:10px; letter-spacing:2px; color: rgba(255,255,255,0.32);
+    text-transform:uppercase; z-index:10; user-select:none;
+  }
+  #skip-site{
+    position:fixed; top: 28px; right: 32px; z-index: 20;
+    font-family:"Space Grotesk", sans-serif; font-size:11px; letter-spacing:1.5px;
+    text-transform:uppercase; color: rgba(234,242,250,0.55);
+    text-decoration:none; border-bottom:1px solid rgba(234,242,250,0.25);
+    padding-bottom: 3px; transition: color .2s, border-color .2s;
+  }
+  #skip-site:hover{ color: var(--cyan); border-color: var(--cyan); }
+
+  @media (max-width: 560px){
+    #scene-title .glass{ padding: 40px 30px; }
+    .skill-card{ width: 84vw; padding: 26px 24px; }
+    #scene-contact .glass{ padding: 36px 26px; }
+    .contact-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="canvas-wrap"></div>
+<div id="vignette"></div>
+<div id="grain"></div>
+
+<div class="stage">
+  <div class="scene active" id="scene-title">
+    <div class="glass">
+      <div class="eyebrow">Portfolio Intro</div>
+      <div class="name">Adewumi Adedotun<br>Emmanuel</div>
+      <div class="role">UI / UX &amp; Product Designer</div>
+      <div class="rule"></div>
+      <div class="tagline">Designing interfaces and systems that feel inevitable — clear, considered, and built to last.</div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene-skills">
+    <div class="heading">
+      <div class="eyebrow">What I Bring</div>
+    </div>
+    <div class="inner">
+      <div class="skill-card glass">
+        <div class="skill-num">01</div>
+        <div class="skill-title">Systems Thinking</div>
+        <div class="skill-desc">Structuring complex products into flows and components that stay coherent as they scale.</div>
+      </div>
+      <div class="skill-card glass">
+        <div class="skill-num">02</div>
+        <div class="skill-title">Visual Hierarchy</div>
+        <div class="skill-desc">Typography, color, and spacing used with intent — so attention lands where it should.</div>
+      </div>
+      <div class="skill-card glass">
+        <div class="skill-num">03</div>
+        <div class="skill-title">Interaction Design</div>
+        <div class="skill-desc">Prototyping and motion that make an interface feel responsive, alive, and easy to trust.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene-statement">
+    <div class="wrap">
+      <div class="eyebrow">Philosophy</div>
+      <div class="statement">Good design isn&#x2019;t decoration &mdash; it&#x2019;s <em>clarity</em>, built one deliberate decision at a time.</div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene-contact">
+    <div class="glass">
+      <div class="contact-head">Let&#x2019;s build something.</div>
+      <div class="contact-sub">Open to product, UX, and workspace design work.</div>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-label">Portfolio</div>
+          <div class="contact-value"><a href="https://adedotun-portfolio.netlify.app" target="_blank" rel="noopener">adedotun-portfolio.netlify.app</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:aadedotun80@gmail.com">aadedotun80@gmail.com</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">0907 922 6778 &middot; 0906 627 2374</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value"><a href="https://www.linkedin.com/in/adedotunadewumi" target="_blank" rel="noopener">/in/adedotunadewumi</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Instagram</div>
+          <div class="contact-value">@hadey_do2un</div>
+        </div>
+      </div>
+      <a href="index.html" class="enter-btn">Enter Portfolio &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<div id="progress-track"><div id="progress-fill"></div></div>
+<div id="hint">Click to skip ahead</div>
+<a href="index.html" id="skip-site">Skip Intro &rarr;</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  // ============== THREE.JS BACKGROUND ==============
+  const wrap = document.getElementById('canvas-wrap');
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x060912, 0.045);
+
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
+  camera.position.set(0, 0, 14);
+
+  const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x060912, 1);
+  wrap.appendChild(renderer.domElement);
+
+  // lights
+  scene.add(new THREE.AmbientLight(0x223344, 1.1));
+  const pl1 = new THREE.PointLight(0x5EEAFF, 2.4, 40); pl1.position.set(8, 6, 10); scene.add(pl1);
+  const pl2 = new THREE.PointLight(0x9B6BFF, 2.0, 40); pl2.position.set(-9, -5, 6); scene.add(pl2);
+
+  // particle field
+  const PCOUNT = 1400;
+  const pPos = new Float32Array(PCOUNT*3);
+  const pCol = new Float32Array(PCOUNT*3);
+  const cyan = new THREE.Color(0x5EEAFF), violet = new THREE.Color(0x9B6BFF), white = new THREE.Color(0xffffff);
+  for(let i=0;i<PCOUNT;i++){
+    const r = 18 * Math.pow(Math.random(), 0.5);
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.acos((Math.random()*2)-1);
+    pPos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
+    pPos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
+    pPos[i*3+2] = r*Math.cos(phi) - 6;
+    const c = Math.random();
+    const col = c < 0.45 ? cyan : (c < 0.8 ? violet : white);
+    pCol[i*3]=col.r; pCol[i*3+1]=col.g; pCol[i*3+2]=col.b;
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos,3));
+  pGeo.setAttribute('color', new THREE.BufferAttribute(pCol,3));
+  const pMat = new THREE.PointsMaterial({ size:0.085, vertexColors:true, transparent:true, opacity:0.85, blending:THREE.AdditiveBlending, depthWrite:false });
+  const particles = new THREE.Points(pGeo, pMat);
+  scene.add(particles);
+
+  // signature: wireframe icosahedron core (the throughline anchor)
+  const coreGroup = new THREE.Group();
+  const icoGeo = new THREE.IcosahedronGeometry(3.1, 1);
+  const icoMat = new THREE.MeshBasicMaterial({ color:0x5EEAFF, wireframe:true, transparent:true, opacity:0.55 });
+  const ico = new THREE.Mesh(icoGeo, icoMat);
+  coreGroup.add(ico);
+
+  const icoInnerGeo = new THREE.IcosahedronGeometry(1.9, 0);
+  const icoInnerMat = new THREE.MeshBasicMaterial({ color:0x9B6BFF, wireframe:true, transparent:true, opacity:0.4 });
+  const icoInner = new THREE.Mesh(icoInnerGeo, icoInnerMat);
+  coreGroup.add(icoInner);
+
+  coreGroup.position.set(0,0,-4);
+  scene.add(coreGroup);
+
+  // orbiting rings
+  const ringGeo = new THREE.TorusGeometry(5.4, 0.012, 8, 120);
+  const ringMat = new THREE.MeshBasicMaterial({ color:0x5EEAFF, transparent:true, opacity:0.35 });
+  const ring1 = new THREE.Mesh(ringGeo, ringMat);
+  ring1.rotation.x = Math.PI/2.3;
+  const ring2 = new THREE.Mesh(ringGeo.clone(), new THREE.MeshBasicMaterial({ color:0x9B6BFF, transparent:true, opacity:0.28 }));
+  ring2.rotation.x = Math.PI/1.7; ring2.rotation.y = Math.PI/4;
+  ring1.position.copy(coreGroup.position); ring2.position.copy(coreGroup.position);
+  scene.add(ring1, ring2);
+
+  // small floating shards (signature glass motif)
+  const shards = [];
+  const shardMat = new THREE.MeshBasicMaterial({ color:0x9B6BFF, transparent:true, opacity:0.5, wireframe:true });
+  for(let i=0;i<10;i++){
+    const g = new THREE.TetrahedronGeometry(0.32 + Math.random()*0.35, 0);
+    const m = new THREE.Mesh(g, shardMat);
+    m.position.set((Math.random()-0.5)*12, (Math.random()-0.5)*7, -2 + (Math.random()-0.5)*8);
+    m.userData = m.userData || {};
+    m.userData.speed = 0.2 + Math.random()*0.4;
+    m.userData.offset = Math.random()*Math.PI*2;
+    scene.add(m);
+    shards.push(m);
+  }
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', e=>{
+    mouseX = (e.clientX/window.innerWidth - 0.5);
+    mouseY = (e.clientY/window.innerHeight - 0.5);
+  });
+
+  function onResize(){
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  window.addEventListener('resize', onResize);
+
+  const clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    particles.rotation.y = t * 0.018;
+    particles.rotation.x = t * 0.006;
+
+    coreGroup.rotation.y = t * 0.22;
+    coreGroup.rotation.x = Math.sin(t*0.18) * 0.25;
+    icoInner.rotation.y = -t * 0.35;
+
+    ring1.rotation.z = t * 0.12;
+    ring2.rotation.z = -t * 0.09;
+
+    shards.forEach(s=>{
+      s.rotation.x += 0.004 * s.userData.speed;
+      s.rotation.y += 0.006 * s.userData.speed;
+      s.position.y += Math.sin(t*s.userData.speed + s.userData.offset)*0.0015;
+    });
+
+    camera.position.x += ( mouseX*1.4 - camera.position.x ) * 0.02;
+    camera.position.y += ( -mouseY*1.0 - camera.position.y ) * 0.02;
+    camera.lookAt(0,0,-4);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // ============== SCENE TIMELINE ==============
+  const scenes = ['scene-title','scene-skills','scene-statement','scene-contact'];
+  const durations = [4200, 5200, 4200, 11000]; // ms per scene
+  let idx = 0, timer = null, segStart = Date.now();
+  const fill = document.getElementById('progress-fill');
+
+  function showScene(i){
+    scenes.forEach((id,n)=>{
+      document.getElementById(id).classList.toggle('active', n===i);
+    });
+    segStart = Date.now();
+  }
+
+  function nextScene(){
+    idx = (idx + 1) % scenes.length;
+    showScene(idx);
+    scheduleNext();
+  }
+
+  function scheduleNext(){
+    clearTimeout(timer);
+    timer = setTimeout(nextScene, durations[idx]);
+  }
+
+  showScene(0);
+  scheduleNext();
+
+  function updateProgress(){
+    requestAnimationFrame(updateProgress);
+    const elapsed = Date.now() - segStart;
+    const pct = Math.min(100, (elapsed / durations[idx]) * 100);
+    fill.style.width = pct + '%';
+  }
+  updateProgress();
+
+  // click anywhere to skip to next scene
+  document.addEventListener('click', ()=>{
+    nextScene();
+  });
+})();
+
+</script>
+</body>
+</html>
