@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduAfrika — Case Study · Adewumi Emmanuel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --night:   #0B0F1A;
+  --night2:  #141824;
+  --night3:  #1E2333;
+  --ivory:   #F7F3EC;
+  --ivory2:  #EDE8DF;
+  --ivory3:  #DDD7CC;
+  --saffron: #E8A020;
+  --saffron2:#F5B840;
+  --sage:    #3D7A6B;
+  --sage-lt: #C8E6DF;
+  --rust:    #C04E2A;
+  --ink:     #0B0F1A;
+  --body:    #2C3347;
+  --mid:     #5A6278;
+  --faint:   #9AA0B4;
+  --rule:    rgba(11,15,26,0.10);
+  --rule-lt: rgba(247,243,236,0.12);
+  --serif:   'DM Serif Display', Georgia, serif;
+  --sans:    'IBM Plex Sans', system-ui, sans-serif;
+  --mono:    'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--sans);
+  background: var(--ivory);
+  color: var(--body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(247,243,236,0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-back {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; color: var(--mid); text-decoration: none;
+  transition: color .2s;
+}
+.nav-back:hover { color: var(--night); }
+.nav-brand {
+  font-family: var(--serif); font-size: 18px;
+  color: var(--night); letter-spacing: 0.02em;
+}
+.nav-brand span { color: var(--saffron); }
+.nav-cta {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; color: var(--ivory);
+  background: var(--night); padding: 9px 20px;
+  text-decoration: none; transition: background .2s;
+}
+.nav-cta:hover { background: var(--saffron); }
+
+/* ═══════════════════════════════════════════════
+   HERO — full viewport, editorial
+═══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  background: var(--night);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding-top: 56px;
+  position: relative;
+  overflow: hidden;
+}
+/* African textile grid overlay */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(232,160,32,0.06) 79px, rgba(232,160,32,0.06) 80px),
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(232,160,32,0.04) 79px, rgba(232,160,32,0.04) 80px);
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 6rem 3rem 4rem;
+  width: 100%;
+}
+.hero-left { padding-right: 5rem; }
+
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--saffron);
+  margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 28px; height: 1px; background: var(--saffron);
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 5.5vw, 5.2rem);
+  line-height: 1.04;
+  color: var(--ivory);
+  margin-bottom: 2rem;
+  letter-spacing: -0.01em;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--saffron);
+}
+
+.hero-desc {
+  font-size: 1.05rem; line-height: 1.85;
+  color: rgba(247,243,236,0.6);
+  max-width: 440px;
+  margin-bottom: 3rem;
+  font-weight: 300;
+}
+
+.hero-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 3.5rem;
+}
+.chip {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.08em; padding: 6px 14px;
+  border: 1px solid rgba(247,243,236,0.18);
+  color: rgba(247,243,236,0.5);
+}
+.chip.gold { border-color: var(--saffron); color: var(--saffron); }
+
+.hero-meta-row {
+  display: grid; grid-template-columns: repeat(4, auto);
+  gap: 2.5rem; justify-content: start;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rule-lt);
+}
+.hero-meta-item label {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--faint);
+  display: block; margin-bottom: 6px;
+}
+.hero-meta-item span {
+  font-size: 14px; font-weight: 500; color: var(--ivory);
+}
+
+/* hero right — large mockup */
+.hero-right {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.hero-device {
+  width: 100%;
+  max-width: 520px;
+  background: var(--ivory);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 40px 120px rgba(0,0,0,0.6),
+    0 4px 16px rgba(232,160,32,0.15);
+  position: relative;
+}
+.device-topbar {
+  height: 40px; background: var(--ivory2);
+  border-bottom: 1px solid var(--ivory3);
+  display: flex; align-items: center; padding: 0 14px; gap: 7px;
+}
+.dtl { width: 11px; height: 11px; border-radius: 50%; }
+.device-body { padding: 0; }
+
+/* app sidebar */
+.app-layout { display: flex; height: 400px; }
+.app-sidebar {
+  width: 180px; flex-shrink: 0;
+  background: var(--night);
+  padding: 20px 0;
+  display: flex; flex-direction: column;
+}
+.sidebar-logo {
+  font-family: var(--serif); font-size: 15px;
+  color: var(--saffron); padding: 0 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 12px;
+}
+.sidebar-item {
+  padding: 10px 18px;
+  font-size: 12px; color: rgba(247,243,236,0.45);
+  display: flex; align-items: center; gap: 9px;
+  cursor: default;
+}
+.sidebar-item.active {
+  background: rgba(232,160,32,0.12);
+  color: var(--saffron);
+  border-left: 2px solid var(--saffron);
+}
+.sidebar-item .s-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; opacity: 0.5; flex-shrink: 0;
+}
+.sidebar-item.active .s-dot { opacity: 1; }
+.sidebar-bottom {
+  margin-top: auto; padding: 14px 18px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--sage));
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; color: white; font-weight: 600;
+}
+
+/* app main */
+.app-main {
+  flex: 1; background: #FAFAF8;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.app-topbar {
+  height: 44px; background: white;
+  border-bottom: 1px solid #EBEBEB;
+  display: flex; align-items: center;
+  padding: 0 18px;
+  justify-content: space-between;
+}
+.app-greeting { font-size: 11px; color: #888; font-family: var(--sans); }
+.app-greeting strong { color: #111; font-weight: 600; }
+.app-main-body { flex: 1; padding: 16px 18px; overflow: hidden; }
+
+.stat-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.stat-mini {
+  flex: 1; background: white; border: 1px solid #EBEBEB;
+  border-radius: 8px; padding: 10px 10px 8px;
+}
+.stat-mini-val { font-size: 18px; font-weight: 700; color: var(--night); font-family: var(--serif); }
+.stat-mini-lbl { font-size: 8px; color: #9AA0B4; margin-top: 2px; }
+.stat-mini.gold .stat-mini-val { color: var(--saffron); }
+.stat-mini.sage .stat-mini-val { color: var(--sage); }
+
+.course-section-title { font-size: 10px; font-weight: 600; color: #111; margin-bottom: 8px; }
+.course-row {
+  display: flex; align-items: center; gap: 10px;
+  background: white; border: 1px solid #EBEBEB;
+  border-radius: 8px; padding: 10px 12px;
+  margin-bottom: 7px;
+}
+.course-icon {
+  width: 30px; height: 30px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.course-info { flex: 1; min-width: 0; }
+.course-title { font-size: 9px; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.course-sub { font-size: 8px; color: #9AA0B4; margin-top: 2px; }
+.course-bar { height: 3px; background: #EBEBEB; border-radius: 2px; margin-top: 5px; }
+.course-fill { height: 100%; border-radius: 2px; }
+.course-btn {
+  font-size: 8px; font-weight: 600; padding: 5px 10px;
+  border-radius: 12px; flex-shrink: 0; white-space: nowrap;
+}
+
+/* floating stat badge */
+.hero-badge {
+  position: absolute;
+  bottom: 32px; left: -32px;
+  background: var(--saffron);
+  padding: 16px 20px;
+  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.hero-badge-num {
+  font-family: var(--serif); font-size: 2rem;
+  color: var(--night); line-height: 1;
+}
+.hero-badge-lbl { font-size: 11px; color: rgba(11,15,26,0.7); margin-top: 3px; }
+
+/* hero bottom strip */
+.hero-strip {
+  border-top: 1px solid var(--rule-lt);
+  max-width: 1320px; margin: 0 auto; width: 100%;
+  padding: 1.5rem 3rem;
+  display: flex; align-items: center; gap: 4rem;
+}
+.strip-label {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--faint); letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.strip-divider { width: 1px; height: 24px; background: var(--rule-lt); }
+.strip-stat { display: flex; align-items: baseline; gap: 6px; }
+.strip-stat-num {
+  font-family: var(--serif); font-size: 1.5rem;
+  color: var(--saffron);
+}
+.strip-stat-lbl { font-size: 12px; color: var(--faint); }
+
+/* ═══════════════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════════════ */
+.container { max-width: 1080px; margin: 0 auto; padding: 0 3rem; }
+.container-narrow { max-width: 760px; margin: 0 auto; padding: 0 3rem; }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; color: var(--saffron);
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.25rem;
+}
+.eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--saffron); }
+
+.display {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  color: var(--night); line-height: 1.12;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+.display em { font-style: italic; color: var(--saffron); }
+
+.body-text {
+  font-size: 1rem; line-height: 1.85;
+  color: var(--body); font-weight: 300;
+}
+.body-text + .body-text { margin-top: 1rem; }
+.body-text strong { font-weight: 600; color: var(--night); }
+
+/* ═══════════════════════════════════════════════
+   SECTION WRAPPERS
+═══════════════════════════════════════════════ */
+.section { padding: 7rem 0; border-top: 1px solid var(--rule); }
+.section-dark {
+  padding: 7rem 0;
+  background: var(--night);
+  border-top: none;
+}
+.section-ruled { padding: 7rem 0; border-top: 1px solid var(--rule); }
+
+/* ═══════════════════════════════════════════════
+   PROBLEM — horizontal scrolling cards
+═══════════════════════════════════════════════ */
+.problem-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+  margin-bottom: 4rem;
+}
+.problem-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.problem-card {
+  background: var(--ivory);
+  padding: 2.5rem 2rem;
+  transition: background .25s;
+}
+.problem-card:hover { background: var(--night); }
+.problem-card:hover .p-title,
+.problem-card:hover .p-body { color: var(--ivory); }
+.problem-card:hover .p-num { color: var(--saffron); }
+.p-num {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; color: var(--faint);
+  margin-bottom: 1.5rem; display: block;
+}
+.p-icon { font-size: 28px; margin-bottom: 1rem; display: block; }
+.p-title {
+  font-size: 15px; font-weight: 600; color: var(--night);
+  margin-bottom: 0.75rem; transition: color .25s;
+}
+.p-body {
+  font-size: 13px; line-height: 1.7; color: var(--mid);
+  transition: color .25s;
+}
+
+/* ═══════════════════════════════════════════════
+   PULLQUOTE
+═══════════════════════════════════════════════ */
+.pullquote-wrap {
+  padding: 5rem 0;
+  background: var(--night);
+  border-top: none;
+}
+.pullquote {
+  max-width: 900px; margin: 0 auto; padding: 0 3rem;
+  text-align: center;
+}
+.pq-mark {
+  font-family: var(--serif); font-size: 6rem;
+  color: var(--saffron); line-height: 0.5;
+  margin-bottom: 2rem; display: block; opacity: 0.4;
+}
+.pq-text {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  color: var(--ivory);
+  line-height: 1.4; font-style: italic;
+  margin-bottom: 2rem;
+}
+.pq-cite {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.12em; color: var(--faint);
+}
+
+/* ═══════════════════════════════════════════════
+   RESEARCH
+═══════════════════════════════════════════════ */
+.research-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+}
+.research-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-top: 2.5rem;
+}
+.r-stat { background: var(--ivory); padding: 2rem 1.75rem; }
+.r-stat-num {
+  font-family: var(--serif); font-size: 3rem;
+  color: var(--night); display: block;
+  line-height: 1; margin-bottom: 8px;
+}
+.r-stat-num.gold { color: var(--saffron); }
+.r-stat-num.sage { color: var(--sage); }
+.r-stat-lbl { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+.research-quotes { display: flex; flex-direction: column; gap: 1.5rem; padding-top: 1rem; }
+.rq {
+  padding: 1.75rem;
+  border: 1px solid var(--rule);
+  background: white;
+  position: relative;
+}
+.rq::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--saffron);
+}
+.rq-text {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.05rem; color: var(--night);
+  line-height: 1.6; margin-bottom: 1rem;
+}
+.rq-cite {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.1em; color: var(--sage);
+}
+
+/* ═══════════════════════════════════════════════
+   PERSONA
+═══════════════════════════════════════════════ */
+.persona-outer {
+  background: var(--night);
+  padding: 5rem 0;
+}
+.persona-card {
+  background: var(--night2);
+  border: 1px solid rgba(247,243,236,0.08);
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 3.5rem; padding: 3rem;
+}
+.persona-ava {
+  width: 100px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.ava-circle {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron) 0%, var(--sage) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+}
+.ava-name {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.1em; color: var(--faint);
+  text-align: center;
+}
+.persona-name {
+  font-family: var(--serif); font-size: 1.8rem;
+  color: var(--ivory); margin-bottom: 4px;
+}
+.persona-role {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.1em; color: var(--saffron);
+  margin-bottom: 1.25rem;
+}
+.persona-bio {
+  font-size: 0.95rem; line-height: 1.8;
+  color: rgba(247,243,236,0.55); font-weight: 300;
+  margin-bottom: 2rem; max-width: 600px;
+}
+.persona-cols {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.persona-col h4 {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.12em; color: var(--saffron);
+  margin-bottom: 1rem;
+}
+.persona-col ul { list-style: none; }
+.persona-col ul li {
+  font-size: 13px; color: rgba(247,243,236,0.5);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(247,243,236,0.06);
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.persona-col ul li::before { content: '→'; color: var(--saffron); flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════
+   SIGNATURE: LEARNING JOURNEY MAP
+═══════════════════════════════════════════════ */
+.journey-section {
+  background: var(--night);
+  padding: 7rem 0;
+}
+.journey-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+.journey-header .display { color: var(--ivory); }
+.journey-header .eyebrow { justify-content: center; }
+.journey-header .eyebrow::before { display: none; }
+
+.journey-track {
+  position: relative;
+  max-width: 1000px; margin: 0 auto; padding: 0 3rem;
+}
+/* central vertical line */
+.journey-track::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--saffron) 15%, var(--saffron) 85%, transparent);
+  transform: translateX(-50%);
+}
+.journey-step {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 4rem;
+  position: relative;
+}
+.journey-step:nth-child(even) .js-content { order: 3; text-align: left; }
+.journey-step:nth-child(even) .js-spacer { order: 2; }
+.journey-step:nth-child(even) .js-empty { order: 1; }
+.js-content {
+  text-align: right;
+}
+.js-content:has(+ .js-spacer + .js-empty) {
+  text-align: right;
+}
+.js-node {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--saffron);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  position: relative; z-index: 2;
+  box-shadow: 0 0 0 8px rgba(232,160,32,0.1);
+  flex-shrink: 0;
+}
+.js-node.sage { background: var(--sage); box-shadow: 0 0 0 8px rgba(61,122,107,0.12); }
+.js-node.rust { background: var(--rust); box-shadow: 0 0 0 8px rgba(192,78,42,0.12); }
+.js-step-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--saffron);
+  margin-bottom: 6px;
+}
+.js-step-label.sage { color: var(--sage); }
+.js-step-label.rust { color: #E8735A; }
+.js-title {
+  font-family: var(--serif); font-size: 1.2rem;
+  color: var(--ivory); margin-bottom: 8px;
+}
+.js-body { font-size: 13px; color: rgba(247,243,236,0.45); line-height: 1.7; }
+.js-spacer { display: flex; justify-content: center; }
+.js-empty {}
+
+/* ═══════════════════════════════════════════════
+   DESIGN DECISIONS
+═══════════════════════════════════════════════ */
+.decisions-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-top: 3rem;
+}
+.decision-card {
+  background: var(--ivory);
+  padding: 2.5rem 2rem;
+}
+.dc-num {
+  font-family: var(--serif); font-size: 3.5rem;
+  color: var(--ivory2); line-height: 1;
+  margin-bottom: 1.25rem; display: block;
+}
+.dc-title {
+  font-size: 16px; font-weight: 600;
+  color: var(--night); margin-bottom: 0.75rem;
+}
+.dc-body { font-size: 13px; line-height: 1.75; color: var(--mid); }
+.dc-impact {
+  margin-top: 1.25rem; padding: 10px 14px;
+  background: var(--night); display: inline-block;
+}
+.dc-impact span {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--saffron); letter-spacing: 0.06em;
+}
+
+/* ═══════════════════════════════════════════════
+   SCREENS SHOWCASE
+═══════════════════════════════════════════════ */
+.screens-section { padding: 7rem 0; background: #F0EDE6; border-top: 1px solid var(--rule); }
+.screens-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: end;
+  margin-bottom: 4rem;
+}
+.screens-intro .display { margin-bottom: 0; }
+.screens-note { font-size: 14px; color: var(--mid); line-height: 1.7; }
+
+.screens-mosaic {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 12px;
+}
+.sc { border-radius: 12px; overflow: hidden; background: white; border: 1px solid var(--ivory3); }
+.sc:hover { box-shadow: 0 12px 40px rgba(11,15,26,0.12); transform: translateY(-3px); transition: all .3s; }
+.sc-1 { grid-column: span 7; }
+.sc-2 { grid-column: span 5; }
+.sc-3 { grid-column: span 4; }
+.sc-4 { grid-column: span 4; }
+.sc-5 { grid-column: span 4; }
+
+.sc-visual {
+  aspect-ratio: 16/9; overflow: hidden;
+  display: flex; align-items: stretch;
+}
+.sc-1 .sc-visual, .sc-2 .sc-visual { aspect-ratio: 16/9; }
+.sc-3 .sc-visual, .sc-4 .sc-visual, .sc-5 .sc-visual { aspect-ratio: 4/3; }
+
+.sc-label { padding: 1rem 1.25rem; border-top: 1px solid var(--ivory3); }
+.sc-label-name { font-size: 13px; font-weight: 600; color: var(--night); margin-bottom: 2px; }
+.sc-label-desc { font-size: 11px; color: var(--mid); }
+
+/* ── SVG mini app screens ── */
+.sc-visual svg { width: 100%; height: 100%; }
+
+/* ═══════════════════════════════════════════════
+   OUTCOMES
+═══════════════════════════════════════════════ */
+.outcomes-band {
+  background: var(--night); padding: 6rem 0;
+}
+.outcomes-inner {
+  display: grid; grid-template-columns: 1fr 3fr;
+  gap: 5rem; align-items: center;
+}
+.outcomes-intro .display { color: var(--ivory); }
+.outcomes-numbers {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: rgba(247,243,236,0.06);
+  border: 1px solid rgba(247,243,236,0.06);
+}
+.on-card { background: var(--night2); padding: 2.5rem 1.75rem; }
+.on-card.accent { background: var(--saffron); }
+.on-num {
+  font-family: var(--serif); font-size: 3rem;
+  color: var(--saffron); display: block;
+  line-height: 1; margin-bottom: 10px;
+}
+.on-card.accent .on-num { color: var(--night); }
+.on-lbl { font-size: 12px; color: rgba(247,243,236,0.4); line-height: 1.5; }
+.on-card.accent .on-lbl { color: rgba(11,15,26,0.65); }
+
+/* ═══════════════════════════════════════════════
+   LEARNINGS
+═══════════════════════════════════════════════ */
+.learnings-layout {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 6rem; align-items: start;
+}
+.learning-list { display: flex; flex-direction: column; gap: 0; }
+.learning-item {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 40px 1fr;
+  gap: 1.5rem; align-items: start;
+}
+.learning-item:first-child { padding-top: 0; }
+.li-num {
+  font-family: var(--serif); font-size: 2.2rem;
+  color: var(--ivory3); line-height: 1;
+}
+.li-title {
+  font-size: 15px; font-weight: 600;
+  color: var(--night); margin-bottom: 8px;
+}
+.li-body { font-size: 13px; line-height: 1.75; color: var(--mid); }
+
+/* ═══════════════════════════════════════════════
+   FOOTER CTA
+═══════════════════════════════════════════════ */
+.footer-cta {
+  background: var(--saffron);
+  padding: 6rem 0;
+  text-align: center;
+}
+.footer-cta .display {
+  color: var(--night);
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  margin-bottom: 0.75rem;
+}
+.footer-sub {
+  font-size: 1rem; color: rgba(11,15,26,0.65);
+  font-weight: 300; margin-bottom: 2.5rem;
+}
+.footer-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.footer-link {
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; padding: 12px 28px;
+  text-decoration: none; transition: all .2s;
+}
+.footer-link.dark { background: var(--night); color: var(--ivory); }
+.footer-link.dark:hover { background: var(--night2); }
+.footer-link.ghost { border: 1.5px solid rgba(11,15,26,0.3); color: var(--night); }
+.footer-link.ghost:hover { background: rgba(11,15,26,0.08); }
+.footer-meta {
+  margin-top: 4rem; padding-top: 2rem;
+  border-top: 1px solid rgba(11,15,26,0.12);
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.1em; color: rgba(11,15,26,0.4);
+}
+
+/* ═══════════════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .75s cubic-bezier(.25,.46,.45,.94),
+              transform .75s cubic-bezier(.25,.46,.45,.94);
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .problem-grid { grid-template-columns: 1fr 1fr; }
+  .research-layout { grid-template-columns: 1fr; }
+  .persona-card { grid-template-columns: 1fr; }
+  .journey-track::before { left: 28px; }
+  .journey-step { grid-template-columns: 56px 1fr; grid-template-rows: auto; }
+  .js-empty { display: none; }
+  .js-content { text-align: left !important; order: 2 !important; }
+  .js-spacer { order: 1 !important; justify-content: flex-start; }
+  .decisions-grid { grid-template-columns: 1fr; }
+  .screens-intro { grid-template-columns: 1fr; }
+  .screens-mosaic { grid-template-columns: 1fr 1fr; }
+  .sc-1,.sc-2,.sc-3,.sc-4,.sc-5 { grid-column: span 1; }
+  .outcomes-inner { grid-template-columns: 1fr; }
+  .outcomes-numbers { grid-template-columns: 1fr 1fr; }
+  .learnings-layout { grid-template-columns: 1fr; }
+  .hero-meta-row { gap: 1.5rem; }
+  .container, .container-narrow { padding: 0 1.5rem; }
+  .nav { padding: 0 1.5rem; }
+  .hero-inner { padding: 4rem 1.5rem 3rem; }
+  .hero-strip { padding: 1.5rem; gap: 2rem; }
+  .problem-intro { grid-template-columns: 1fr; gap: 2rem; }
+  .persona-cols { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="https://adedotun-portfolio.netlify.app" class="nav-back">← Portfolio</a>
+  <span class="nav-brand">Edu<span>Afrika</span></span>
+  <a href="mailto:aadedotun80@gmail.com" class="nav-cta">HIRE ME</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+  HERO
+══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">CASE STUDY · UI/UX DESIGN · 2024</div>
+      <h1 class="hero-title">
+        The e-learning platform <em>Africa's students</em> actually deserve
+      </h1>
+      <p class="hero-desc">
+        EduAfrika reimagines online education from the ground up — offline-first, mobile-native, culturally resonant, and built for the 6 million university students across Sub-Saharan Africa who've been underserved by global platforms.
+      </p>
+      <div class="hero-chips">
+        <span class="chip gold">UX Research</span>
+        <span class="chip gold">UI Design</span>
+        <span class="chip">Figma</span>
+        <span class="chip">Prototyping</span>
+        <span class="chip">Usability Testing</span>
+        <span class="chip">Design Systems</span>
+      </div>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item"><label>ROLE</label><span>Lead UI/UX Designer</span></div>
+        <div class="hero-meta-item"><label>TIMELINE</label><span>8 Weeks</span></div>
+        <div class="hero-meta-item"><label>PLATFORM</label><span>Web + Mobile</span></div>
+        <div class="hero-meta-item"><label>TOOLS</label><span>Figma · FigJam</span></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div style="position:relative">
+        <div class="hero-device">
+          <div class="device-topbar">
+            <div class="dtl" style="background:#FF5F57"></div>
+            <div class="dtl" style="background:#FEBC2E"></div>
+            <div class="dtl" style="background:#28C840"></div>
+          </div>
+          <div class="device-body">
+            <div class="app-layout">
+              <div class="app-sidebar">
+                <div class="sidebar-logo">EduAfrika</div>
+                <div class="sidebar-item active"><span class="s-dot"></span>Dashboard</div>
+                <div class="sidebar-item"><span class="s-dot"></span>My Courses</div>
+                <div class="sidebar-item"><span class="s-dot"></span>Explore</div>
+                <div class="sidebar-item"><span class="s-dot"></span>Downloads</div>
+                <div class="sidebar-item"><span class="s-dot"></span>Certificates</div>
+                <div class="sidebar-bottom">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span class="sidebar-avatar">AO</span>
+                    <span style="font-size:11px;color:rgba(247,243,236,0.4)">Amara O.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="app-main">
+                <div class="app-topbar">
+                  <span class="app-greeting">Good morning, <strong>Amara 👋</strong></span>
+                  <span style="font-size:11px;color:#E8A020;font-weight:600">📥 Offline Ready</span>
+                </div>
+                <div class="app-main-body">
+                  <div class="stat-row">
+                    <div class="stat-mini"><div class="stat-mini-val">6</div><div class="stat-mini-lbl">Active Courses</div></div>
+                    <div class="stat-mini gold"><div class="stat-mini-val">82%</div><div class="stat-mini-lbl">Avg Progress</div></div>
+                    <div class="stat-mini sage"><div class="stat-mini-val">14🔥</div><div class="stat-mini-lbl">Study Streak</div></div>
+                  </div>
+                  <div class="course-section-title">Continue Learning</div>
+                  <div class="course-row">
+                    <div class="course-icon" style="background:#EDE9FE">📊</div>
+                    <div class="course-info">
+                      <div class="course-title">Data Structures & Algorithms</div>
+                      <div class="course-sub">Dr. Adeola Bello · Week 4</div>
+                      <div class="course-bar"><div class="course-fill" style="width:68%;background:#5B21B6"></div></div>
+                    </div>
+                    <div class="course-btn" style="background:#5B21B6;color:white">Resume</div>
+                  </div>
+                  <div class="course-row">
+                    <div class="course-icon" style="background:#C8E6DF">🌍</div>
+                    <div class="course-info">
+                      <div class="course-title">African Economic History</div>
+                      <div class="course-sub">Prof. Ngozi Adeyemi · Week 2</div>
+                      <div class="course-bar"><div class="course-fill" style="width:32%;background:#3D7A6B"></div></div>
+                    </div>
+                    <div class="course-btn" style="background:#3D7A6B;color:white">Resume</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-num">94%</div>
+          <div class="hero-badge-lbl">Student satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <span class="strip-label">KEY OUTCOMES</span>
+    <div class="strip-divider"></div>
+    <div class="strip-stat"><span class="strip-stat-num">87</span><span class="strip-stat-lbl">SUS Score (avg. 68)</span></div>
+    <div class="strip-divider"></div>
+    <div class="strip-stat"><span class="strip-stat-num">↓74%</span><span class="strip-stat-lbl">Payment drop-off</span></div>
+    <div class="strip-divider"></div>
+    <div class="strip-stat"><span class="strip-stat-num">2.3×</span><span class="strip-stat-lbl">Local course enrolment</span></div>
+    <div class="strip-divider"></div>
+    <div class="strip-stat"><span class="strip-stat-num">18</span><span class="strip-stat-lbl">Test participants</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  THE PROBLEM
+══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="problem-intro">
+      <div class="reveal">
+        <div class="eyebrow">THE PROBLEM</div>
+        <h2 class="display">Global platforms weren't built for <em>this</em> context</h2>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <p class="body-text">Coursera, Udemy, and edX were designed for users in the global north — assuming reliable broadband, credit cards, and culturally neutral content. For African university students, those assumptions create real, daily barriers.</p>
+        <p class="body-text" style="margin-top:1rem">This wasn't a surface-level design problem. It required rethinking infrastructure, payment, content curation, and cultural identity at every layer of the product.</p>
+      </div>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <span class="p-num">01</span>
+        <span class="p-icon">📶</span>
+        <div class="p-title">Unstable connectivity</div>
+        <div class="p-body">68% of Nigerian students report frequent connectivity drops that interrupt streaming. One dropped connection can undo hours of learning progress.</div>
+      </div>
+      <div class="problem-card">
+        <span class="p-num">02</span>
+        <span class="p-icon">💸</span>
+        <div class="p-title">Prohibitive data costs</div>
+        <div class="p-body">Mobile data costs 3–8% of monthly income for the average student. A single HD lecture can consume an entire day's data budget.</div>
+      </div>
+      <div class="problem-card">
+        <span class="p-num">03</span>
+        <span class="p-icon">🗺️</span>
+        <div class="p-title">No African context</div>
+        <div class="p-body">Global curricula use American and European case studies exclusively. Students want instructors who look like them, teaching examples they recognise.</div>
+      </div>
+      <div class="problem-card">
+        <span class="p-num">04</span>
+        <span class="p-icon">💳</span>
+        <div class="p-title">Broken payment flows</div>
+        <div class="p-body">Credit card penetration is under 5% for most African students. Most checkout flows fail entirely — not because students can't pay, but because the design doesn't support how they do.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  PULLQUOTE
+══════════════════════════════════════════════ -->
+<div class="pullquote-wrap">
+  <div class="pullquote reveal">
+    <span class="pq-mark">"</span>
+    <p class="pq-text">I stopped using Coursera after three days. Every time I reach a video, my data runs out. I just need something that works with what I actually have.</p>
+    <span class="pq-cite">AMARA, 21 · COMPUTER SCIENCE · UNIVERSITY OF LAGOS</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  RESEARCH
+══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="research-layout">
+      <div class="reveal">
+        <div class="eyebrow">USER RESEARCH</div>
+        <h2 class="display">Understanding before designing</h2>
+        <p class="body-text">Before opening Figma, I spent two weeks in the field. Fourteen in-depth interviews with students across Nigeria, Ghana, and Kenya. Three competitive audits. An 80-person survey distributed via WhatsApp student groups.</p>
+        <p class="body-text">The goal was not to validate assumptions — it was to destroy them.</p>
+        <div class="research-stats">
+          <div class="r-stat">
+            <span class="r-stat-num gold">14</span>
+            <div class="r-stat-lbl">User interviews across 3 countries</div>
+          </div>
+          <div class="r-stat">
+            <span class="r-stat-num">80</span>
+            <div class="r-stat-lbl">Survey responses from student groups</div>
+          </div>
+          <div class="r-stat">
+            <span class="r-stat-num sage">78%</span>
+            <div class="r-stat-lbl">Use mobile as their primary study device</div>
+          </div>
+          <div class="r-stat">
+            <span class="r-stat-num">91%</span>
+            <div class="r-stat-lbl">Want African instructors teaching local content</div>
+          </div>
+        </div>
+      </div>
+      <div class="research-quotes reveal reveal-delay-1">
+        <div class="rq">
+          <p class="rq-text">"The courses are good but they always use American companies as examples. I want to learn from people who understand what business actually looks like here."</p>
+          <span class="rq-cite">KOFI, 23 · BUSINESS · UNIVERSITY OF GHANA</span>
+        </div>
+        <div class="rq">
+          <p class="rq-text">"I downloaded the app on campus Wi-Fi, watched three videos offline at home, then the next day I couldn't continue because I needed internet just to unlock the next lesson. It felt like a punishment."</p>
+          <span class="rq-cite">FATIMA, 22 · ENGINEERING · AHMADU BELLO UNIVERSITY</span>
+        </div>
+        <div class="rq">
+          <p class="rq-text">"I tried to pay for a course on Coursera with my Opay card. It just said 'payment failed.' No explanation. I gave up."</p>
+          <span class="rq-cite">DAVID, 24 · COMPUTER SCIENCE · UNIVERSITY OF NAIROBI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  PERSONA
+══════════════════════════════════════════════ -->
+<div class="persona-outer">
+  <div class="container">
+    <div style="margin-bottom:2.5rem" class="reveal">
+      <div class="eyebrow" style="color:var(--saffron)">PRIMARY PERSONA</div>
+      <h2 class="display" style="color:var(--ivory)">Designing for one person first</h2>
+    </div>
+    <div class="persona-card reveal">
+      <div class="persona-ava">
+        <div class="ava-circle">👩🏾‍💻</div>
+        <div class="ava-name">PRIMARY<br>PERSONA</div>
+      </div>
+      <div>
+        <div class="persona-name">Amara Okonkwo</div>
+        <div class="persona-role">COMPUTER SCIENCE · YEAR 3 · UNIVERSITY OF LAGOS · AGE 21</div>
+        <p class="persona-bio">Amara is ambitious, self-driven, and acutely aware that her degree alone won't get her the tech job she wants. She uses her Android phone for 90% of her studying, shares a data plan with two younger siblings, and has tried four different e-learning platforms — none of them have stuck. She learns best through short, downloadable lessons she can consume offline on her commute.</p>
+        <div class="persona-cols">
+          <div class="persona-col">
+            <h4>GOALS</h4>
+            <ul>
+              <li>Land a software engineering role before graduation</li>
+              <li>Learn from instructors who understand her context</li>
+              <li>Study offline during frequent data shortages</li>
+              <li>Earn certificates employers in Lagos recognise</li>
+              <li>Pay using mobile money — no credit card</li>
+            </ul>
+          </div>
+          <div class="persona-col">
+            <h4>FRUSTRATIONS</h4>
+            <ul>
+              <li>HD video lectures drain her data in minutes</li>
+              <li>All examples reference US or UK companies</li>
+              <li>Checkout flows reject her mobile money card</li>
+              <li>Loses progress every time her connection drops</li>
+              <li>No African lecturers, no familiar faces</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SIGNATURE: LEARNING JOURNEY MAP
+══════════════════════════════════════════════ -->
+<section class="journey-section">
+  <div class="journey-header reveal">
+    <div class="eyebrow">THE DESIGN PROCESS</div>
+    <h2 class="display" style="color:var(--ivory)">From research to resolution — <em>every step</em></h2>
+  </div>
+  <div class="journey-track">
+
+    <div class="journey-step reveal">
+      <div class="js-content">
+        <span class="js-step-label">WEEK 1–2</span>
+        <div class="js-title">Discover & Empathise</div>
+        <div class="js-body">14 student interviews across Nigeria, Ghana, Kenya. Competitive audit of 6 platforms. Heuristic evaluation of Coursera's checkout flow. Uncovering not just what students want, but what their infrastructure actually allows.</div>
+      </div>
+      <div class="js-spacer"><div class="js-node">🔍</div></div>
+      <div class="js-empty"></div>
+    </div>
+
+    <div class="journey-step reveal">
+      <div class="js-empty"></div>
+      <div class="js-spacer"><div class="js-node sage">🗂️</div></div>
+      <div class="js-content" style="text-align:left">
+        <span class="js-step-label sage">WEEK 3</span>
+        <div class="js-title">Define & Frame</div>
+        <div class="js-body">Affinity mapping of 140 research notes into 6 core themes. Problem statement: <em>"African university students need a way to access quality, relevant education that works within real infrastructure constraints — because today's platforms were built for someone else."</em></div>
+      </div>
+    </div>
+
+    <div class="journey-step reveal">
+      <div class="js-content">
+        <span class="js-step-label">WEEK 4</span>
+        <div class="js-title">Ideate & Prioritise</div>
+        <div class="js-body">Crazy 8s sketching session. 60+ solution ideas reduced to 12 through impact/effort mapping. Three big bets emerged: offline-first architecture, African content curation badge, and mobile money checkout. Information architecture finalised across 8 core screens.</div>
+      </div>
+      <div class="js-spacer"><div class="js-node">💡</div></div>
+      <div class="js-empty"></div>
+    </div>
+
+    <div class="journey-step reveal">
+      <div class="js-empty"></div>
+      <div class="js-spacer"><div class="js-node sage">✏️</div></div>
+      <div class="js-content" style="text-align:left">
+        <span class="js-step-label sage">WEEK 5–6</span>
+        <div class="js-title">Prototype</div>
+        <div class="js-body">Low-fidelity wireframes for 8 screens → mid-fidelity component review → high-fidelity Figma prototype with full interaction states. Design system built with 60+ components covering typography, colour, spacing, states, and accessibility annotations.</div>
+      </div>
+    </div>
+
+    <div class="journey-step reveal">
+      <div class="js-content">
+        <span class="js-step-label rust">WEEK 7–8</span>
+        <div class="js-title">Test, Iterate & Ship</div>
+        <div class="js-body">3 rounds of moderated usability testing with 18 participants. SUS score rose from 64 (Round 1) to 87 (Round 3). Major iterations: simplified onboarding from 5 screens to 3, reordered checkout flow, increased touch target sizes for low-end devices. Final prototype delivered for development handoff.</div>
+      </div>
+      <div class="js-spacer"><div class="js-node rust">🚀</div></div>
+      <div class="js-empty"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  DESIGN DECISIONS
+══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">KEY DESIGN DECISIONS</div>
+      <h2 class="display">Three decisions that<br>changed everything</h2>
+    </div>
+    <div class="decisions-grid reveal">
+      <div class="decision-card">
+        <span class="dc-num">01</span>
+        <div class="dc-title">Offline-first, always</div>
+        <div class="dc-body">Every lesson downloads in two tiers — Standard (60% less data) and HD. Progress syncs automatically when connection returns. The entire product was architected around the assumption of no internet, not the assumption of reliable internet. This resolved the single biggest reason students abandoned existing platforms.</div>
+        <div class="dc-impact"><span>↓ 68% — drop-off from connectivity loss</span></div>
+      </div>
+      <div class="decision-card">
+        <span class="dc-num">02</span>
+        <div class="dc-title">The "Made in Africa" badge</div>
+        <div class="dc-body">Courses taught by African instructors using African case studies display a distinctive cultural badge. It took two hours to design and ship. In A/B testing, badged courses achieved 2.3× higher enrolment than identical unbadged courses. Students reported feeling "seen" and "trusting the content more." Small signal, massive meaning.</div>
+        <div class="dc-impact"><span>2.3× — enrolment on badged courses</span></div>
+      </div>
+      <div class="decision-card">
+        <span class="dc-num">03</span>
+        <div class="dc-title">3-tap mobile money checkout</div>
+        <div class="dc-body">I rebuilt the entire payment flow around how African students actually pay — Paystack, Flutterwave, MTN Mobile Money, Airtel Money. No credit card required. The flow is 3 taps from course page to receipt. Payment drop-off, which averaged 74% on competitor platforms, fell to 18% in testing.</div>
+        <div class="dc-impact"><span>↓ 56pt — payment drop-off reduction</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  SCREENS
+══════════════════════════════════════════════ -->
+<section class="screens-section">
+  <div class="container">
+    <div class="screens-intro reveal">
+      <div>
+        <div class="eyebrow">FINAL SCREENS</div>
+        <h2 class="display">The interface,<br><em>finished</em></h2>
+      </div>
+      <p class="screens-note">Light, precise, and purposefully unhurried. The visual design steps back to let student progress take centre stage — every screen is built around momentum, not friction.</p>
+    </div>
+
+    <div class="screens-mosaic">
+
+      <!-- Screen 1: Dashboard (wide) -->
+      <div class="sc sc-1 reveal">
+        <div class="sc-visual">
+          <svg viewBox="0 0 700 394" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="700" height="394" fill="#F7F3EC"/>
+            <!-- sidebar -->
+            <rect width="160" height="394" fill="#0B0F1A"/>
+            <text x="80" y="36" text-anchor="middle" fill="#E8A020" font-size="13" font-family="Georgia" font-weight="bold">EduAfrika</text>
+            <rect x="10" y="52" width="140" height="28" rx="4" fill="rgba(232,160,32,0.12)"/>
+            <rect x="10" y="52" width="2" height="28" fill="#E8A020"/>
+            <text x="26" y="70" fill="#E8A020" font-size="10" font-family="sans-serif">⌂  Dashboard</text>
+            <text x="22" y="100" fill="rgba(247,243,236,0.35)" font-size="10" font-family="sans-serif">◈  My Courses</text>
+            <text x="22" y="124" fill="rgba(247,243,236,0.35)" font-size="10" font-family="sans-serif">🔍  Explore</text>
+            <text x="22" y="148" fill="rgba(247,243,236,0.35)" font-size="10" font-family="sans-serif">📥  Downloads</text>
+            <text x="22" y="172" fill="rgba(247,243,236,0.35)" font-size="10" font-family="sans-serif">🏆  Certificates</text>
+            <circle cx="80" cy="368" r="16" fill="rgba(232,160,32,0.2)" stroke="#E8A020" stroke-width="0.5"/>
+            <text x="80" y="373" text-anchor="middle" fill="#E8A020" font-size="10" font-weight="bold">AO</text>
+            <!-- main area -->
+            <rect x="160" width="540" height="394" fill="#FAFAF8"/>
+            <!-- topbar -->
+            <rect x="160" width="540" height="42" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="178" y="24" fill="#888" font-size="10" font-family="sans-serif">Good morning,</text>
+            <text x="260" y="24" fill="#0B0F1A" font-size="10" font-weight="bold" font-family="sans-serif">Amara 👋</text>
+            <rect x="580" y="12" width="100" height="18" rx="9" fill="#0B0F1A"/>
+            <text x="630" y="24" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif">📥 Offline Ready</text>
+            <!-- stat cards -->
+            <rect x="174" y="54" width="116" height="58" rx="6" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="186" y="74" fill="#888" font-size="8" font-family="sans-serif">Active Courses</text>
+            <text x="186" y="97" fill="#0B0F1A" font-size="22" font-weight="bold" font-family="Georgia">6</text>
+            <rect x="298" y="54" width="116" height="58" rx="6" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="310" y="74" fill="#888" font-size="8" font-family="sans-serif">Avg Progress</text>
+            <text x="310" y="97" fill="#E8A020" font-size="22" font-weight="bold" font-family="Georgia">82%</text>
+            <rect x="422" y="54" width="116" height="58" rx="6" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="434" y="74" fill="#888" font-size="8" font-family="sans-serif">Study Streak</text>
+            <text x="434" y="97" fill="#3D7A6B" font-size="22" font-weight="bold" font-family="Georgia">14 🔥</text>
+            <rect x="546" y="54" width="140" height="58" rx="6" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="558" y="74" fill="#888" font-size="8" font-family="sans-serif">Certificates</text>
+            <text x="558" y="97" fill="#0B0F1A" font-size="22" font-weight="bold" font-family="Georgia">3</text>
+            <!-- section title -->
+            <text x="178" y="136" fill="#0B0F1A" font-size="11" font-weight="bold" font-family="sans-serif">Continue Learning</text>
+            <!-- course 1 -->
+            <rect x="174" y="146" width="270" height="60" rx="8" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="184" y="156" width="34" height="34" rx="8" fill="#EDE9FE"/>
+            <text x="201" y="177" text-anchor="middle" font-size="18">📊</text>
+            <text x="226" y="165" fill="#0B0F1A" font-size="9" font-weight="bold" font-family="sans-serif">Data Structures &amp; Algorithms</text>
+            <text x="226" y="177" fill="#888" font-size="8" font-family="sans-serif">Dr. Adeola Bello · Week 4 of 8</text>
+            <rect x="226" y="188" width="120" height="3" rx="1.5" fill="#EBEBEB"/>
+            <rect x="226" y="188" width="82" height="3" rx="1.5" fill="#5B21B6"/>
+            <rect x="394" y="160" width="42" height="22" rx="11" fill="#5B21B6"/>
+            <text x="415" y="174" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">Resume</text>
+            <!-- course 2 -->
+            <rect x="174" y="214" width="270" height="60" rx="8" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="184" y="224" width="34" height="34" rx="8" fill="#C8E6DF"/>
+            <text x="201" y="245" text-anchor="middle" font-size="18">🌍</text>
+            <text x="226" y="233" fill="#0B0F1A" font-size="9" font-weight="bold" font-family="sans-serif">African Economic History</text>
+            <text x="226" y="245" fill="#888" font-size="8" font-family="sans-serif">Prof. Ngozi Adeyemi · Week 2 of 6</text>
+            <rect x="226" y="256" width="120" height="3" rx="1.5" fill="#EBEBEB"/>
+            <rect x="226" y="256" width="38" height="3" rx="1.5" fill="#3D7A6B"/>
+            <rect x="394" y="228" width="42" height="22" rx="11" fill="#3D7A6B"/>
+            <text x="415" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">Resume</text>
+            <!-- recommended -->
+            <text x="178" y="294" fill="#0B0F1A" font-size="11" font-weight="bold" font-family="sans-serif">Recommended for You</text>
+            <rect x="174" y="304" width="130" height="76" rx="8" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="174" y="304" width="130" height="30" rx="8" fill="#EDE9FE"/>
+            <rect x="174" y="320" width="130" height="14" fill="#EDE9FE"/>
+            <text x="239" y="323" text-anchor="middle" font-size="16">🤖</text>
+            <text x="184" y="352" fill="#0B0F1A" font-size="8" font-weight="bold" font-family="sans-serif">Machine Learning</text>
+            <text x="184" y="364" fill="#888" font-size="7" font-family="sans-serif">Engr. Seun Lawal</text>
+            <text x="184" y="376" fill="#E8A020" font-size="7" font-weight="bold" font-family="sans-serif">Free · 🌍 African</text>
+            <rect x="314" y="304" width="130" height="76" rx="8" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="314" y="304" width="130" height="30" rx="8" fill="#C8E6DF"/>
+            <rect x="314" y="320" width="130" height="14" fill="#C8E6DF"/>
+            <text x="379" y="323" text-anchor="middle" font-size="16">📈</text>
+            <text x="324" y="352" fill="#0B0F1A" font-size="8" font-weight="bold" font-family="sans-serif">African Stock Markets</text>
+            <text x="324" y="364" fill="#888" font-size="7" font-family="sans-serif">Dr. Fatima Diallo</text>
+            <text x="324" y="376" fill="#3D7A6B" font-size="7" font-weight="bold" font-family="sans-serif">₦2,500 · 🌍 African</text>
+            <!-- right widget -->
+            <rect x="462" y="130" width="220" height="140" rx="8" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="478" y="150" fill="#0B0F1A" font-size="10" font-weight="bold" font-family="sans-serif">Weekly Goal</text>
+            <text x="478" y="166" fill="#888" font-size="8" font-family="sans-serif">5h 20m of 8h studied</text>
+            <rect x="478" y="172" width="188" height="7" rx="3.5" fill="#EBEBEB"/>
+            <rect x="478" y="172" width="125" height="7" rx="3.5" fill="#E8A020"/>
+            <text x="478" y="195" fill="#888" font-size="8" font-family="sans-serif">Next milestone: 6 hours</text>
+            <rect x="478" y="204" width="188" height="24" rx="6" fill="#0B0F1A"/>
+            <text x="572" y="219" text-anchor="middle" fill="#E8A020" font-size="9" font-weight="bold" font-family="sans-serif">Start Recommended →</text>
+            <rect x="462" y="278" width="220" height="110" rx="8" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="478" y="298" fill="#0B0F1A" font-size="10" font-weight="bold" font-family="sans-serif">This Week</text>
+            <text x="478" y="320" fill="#888" font-size="8" font-family="sans-serif">Mon</text>
+            <text x="510" y="320" fill="#888" font-size="8" font-family="sans-serif">Tue</text>
+            <text x="542" y="320" fill="#888" font-size="8" font-family="sans-serif">Wed</text>
+            <text x="574" y="320" fill="#888" font-size="8" font-family="sans-serif">Thu</text>
+            <text x="606" y="320" fill="#888" font-size="8" font-family="sans-serif">Fri</text>
+            <text x="638" y="320" fill="#888" font-size="8" font-family="sans-serif">Sat</text>
+            <rect x="476" y="326" width="20" height="40" rx="4" fill="#5B21B6"/>
+            <rect x="508" y="336" width="20" height="30" rx="4" fill="#3D7A6B"/>
+            <rect x="540" y="330" width="20" height="36" rx="4" fill="#E8A020"/>
+            <rect x="572" y="342" width="20" height="24" rx="4" fill="#5B21B6"/>
+            <rect x="604" y="326" width="20" height="40" rx="4" fill="#3D7A6B"/>
+            <rect x="636" y="348" width="20" height="18" rx="4" fill="#EBEBEB"/>
+          </svg>
+        </div>
+        <div class="sc-label">
+          <div class="sc-label-name">Student Dashboard</div>
+          <div class="sc-label-desc">Progress overview, course continuation, weekly goal tracker</div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Explore -->
+      <div class="sc sc-2 reveal reveal-delay-1">
+        <div class="sc-visual">
+          <svg viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="225" fill="#FAFAF8"/>
+            <rect width="400" height="44" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="16" y="19" fill="#0B0F1A" font-size="12" font-weight="bold" font-family="Georgia">Explore Courses</text>
+            <text x="16" y="34" fill="#888" font-size="9" font-family="sans-serif">700+ courses by African experts</text>
+            <!-- search -->
+            <rect x="10" y="50" width="380" height="20" rx="10" fill="white" stroke="#EBEBEB" stroke-width="0.8"/>
+            <text x="22" y="63" fill="#aaa" font-size="9" font-family="sans-serif">🔍  Search topic, skill or instructor...</text>
+            <!-- chips -->
+            <rect x="10" y="76" width="24" height="13" rx="6.5" fill="#0B0F1A"/>
+            <text x="22" y="86" text-anchor="middle" fill="white" font-size="7" font-family="sans-serif">All</text>
+            <rect x="40" y="76" width="42" height="13" rx="6.5" fill="#F0EDE6" stroke="#DDD7CC" stroke-width="0.5"/>
+            <text x="61" y="86" text-anchor="middle" fill="#5A6278" font-size="7" font-family="sans-serif">Tech</text>
+            <rect x="88" y="76" width="54" height="13" rx="6.5" fill="#F0EDE6" stroke="#DDD7CC" stroke-width="0.5"/>
+            <text x="115" y="86" text-anchor="middle" fill="#5A6278" font-size="7" font-family="sans-serif">Business</text>
+            <rect x="148" y="76" width="46" height="13" rx="6.5" fill="#F0EDE6" stroke="#DDD7CC" stroke-width="0.5"/>
+            <text x="171" y="86" text-anchor="middle" fill="#5A6278" font-size="7" font-family="sans-serif">Finance</text>
+            <rect x="200" y="76" width="60" height="13" rx="6.5" fill="#C8E6DF"/>
+            <text x="230" y="86" text-anchor="middle" fill="#3D7A6B" font-size="7" font-weight="bold" font-family="sans-serif">🌍 African</text>
+            <!-- courses -->
+            <text x="12" y="106" fill="#0B0F1A" font-size="9" font-weight="bold" font-family="sans-serif">Trending in Nigeria 🔥</text>
+            <!-- card 1 -->
+            <rect x="10" y="112" width="116" height="100" rx="7" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="10" y="112" width="116" height="36" rx="7" fill="#EDE9FE"/>
+            <rect x="10" y="136" width="116" height="12" fill="#EDE9FE"/>
+            <text x="68" y="134" text-anchor="middle" font-size="18">📊</text>
+            <rect x="88" y="115" width="30" height="11" rx="5.5" fill="#C8E6DF"/>
+            <text x="103" y="123" text-anchor="middle" fill="#3D7A6B" font-size="6" font-weight="bold">🌍 Local</text>
+            <text x="18" y="160" fill="#0B0F1A" font-size="8" font-weight="bold" font-family="sans-serif">Data Structures</text>
+            <text x="18" y="172" fill="#888" font-size="7" font-family="sans-serif">Dr. Adeola Bello</text>
+            <text x="18" y="184" fill="#888" font-size="7" font-family="sans-serif">⭐ 4.9 · 2,841</text>
+            <text x="18" y="200" fill="#E8A020" font-size="8" font-weight="bold" font-family="sans-serif">Free</text>
+            <rect x="72" y="193" width="46" height="14" rx="7" fill="#0B0F1A"/>
+            <text x="95" y="203" text-anchor="middle" fill="#E8A020" font-size="7" font-weight="bold">Enrol</text>
+            <!-- card 2 -->
+            <rect x="134" y="112" width="116" height="100" rx="7" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="134" y="112" width="116" height="36" rx="7" fill="#C8E6DF"/>
+            <rect x="134" y="136" width="116" height="12" fill="#C8E6DF"/>
+            <text x="192" y="134" text-anchor="middle" font-size="18">🌍</text>
+            <rect x="212" y="115" width="30" height="11" rx="5.5" fill="#C8E6DF" stroke="#3D7A6B" stroke-width="0.5"/>
+            <text x="227" y="123" text-anchor="middle" fill="#3D7A6B" font-size="6" font-weight="bold">🌍 Local</text>
+            <text x="142" y="160" fill="#0B0F1A" font-size="8" font-weight="bold" font-family="sans-serif">African Econ Hist.</text>
+            <text x="142" y="172" fill="#888" font-size="7" font-family="sans-serif">Prof. Ngozi Adeyemi</text>
+            <text x="142" y="184" fill="#888" font-size="7" font-family="sans-serif">⭐ 4.8 · 1,204</text>
+            <text x="142" y="200" fill="#E8A020" font-size="8" font-weight="bold" font-family="sans-serif">₦2,500</text>
+            <rect x="196" y="193" width="46" height="14" rx="7" fill="#3D7A6B"/>
+            <text x="219" y="203" text-anchor="middle" fill="white" font-size="7" font-weight="bold">Enrol</text>
+            <!-- card 3 -->
+            <rect x="258" y="112" width="132" height="100" rx="7" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <rect x="258" y="112" width="132" height="36" rx="7" fill="#FEF3C7"/>
+            <rect x="258" y="136" width="132" height="12" fill="#FEF3C7"/>
+            <text x="324" y="134" text-anchor="middle" font-size="18">💰</text>
+            <text x="266" y="160" fill="#0B0F1A" font-size="8" font-weight="bold" font-family="sans-serif">Personal Finance NG</text>
+            <text x="266" y="172" fill="#888" font-size="7" font-family="sans-serif">Mr. Chukwu Obi</text>
+            <text x="266" y="184" fill="#888" font-size="7" font-family="sans-serif">⭐ 4.9 · 5,112</text>
+            <text x="266" y="200" fill="#E8A020" font-size="8" font-weight="bold" font-family="sans-serif">Free</text>
+            <rect x="324" y="193" width="58" height="14" rx="7" fill="#0B0F1A"/>
+            <text x="353" y="203" text-anchor="middle" fill="#E8A020" font-size="7" font-weight="bold">Enrol Free</text>
+          </svg>
+        </div>
+        <div class="sc-label">
+          <div class="sc-label-name">Course Explore</div>
+          <div class="sc-label-desc">Filtered catalogue with "Made in Africa" badge system</div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Onboarding -->
+      <div class="sc sc-3 reveal">
+        <div class="sc-visual">
+          <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="ob-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0B0F1A"/>
+                <stop offset="100%" stop-color="#1a2a22"/>
+              </linearGradient>
+            </defs>
+            <rect width="300" height="225" fill="url(#ob-bg)"/>
+            <!-- dots -->
+            <rect x="128" y="14" width="18" height="6" rx="3" fill="#E8A020"/>
+            <circle cx="153" cy="17" r="3" fill="rgba(247,243,236,0.25)"/>
+            <circle cx="165" cy="17" r="3" fill="rgba(247,243,236,0.25)"/>
+            <!-- circle art -->
+            <circle cx="150" cy="92" r="58" fill="rgba(232,160,32,0.06)"/>
+            <circle cx="150" cy="92" r="42" fill="rgba(232,160,32,0.08)"/>
+            <circle cx="150" cy="92" r="28" fill="rgba(232,160,32,0.12)"/>
+            <text x="150" y="104" text-anchor="middle" font-size="32">📚</text>
+            <!-- text -->
+            <text x="150" y="142" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Georgia">Learn without limits</text>
+            <text x="150" y="159" text-anchor="middle" fill="rgba(247,243,236,0.5)" font-size="9" font-family="sans-serif">Download. Study offline. Keep going.</text>
+            <!-- features -->
+            <rect x="30" y="170" width="108" height="16" rx="8" fill="rgba(232,160,32,0.15)"/>
+            <text x="84" y="181" text-anchor="middle" fill="#E8A020" font-size="8" font-weight="bold" font-family="sans-serif">📥 Offline Mode</text>
+            <rect x="148" y="170" width="122" height="16" rx="8" fill="rgba(61,122,107,0.15)"/>
+            <text x="209" y="181" text-anchor="middle" fill="#3D7A6B" font-size="8" font-weight="bold" font-family="sans-serif">🌍 African Instructors</text>
+            <!-- CTA -->
+            <rect x="40" y="196" width="220" height="22" rx="11" fill="#E8A020"/>
+            <text x="150" y="210" text-anchor="middle" fill="#0B0F1A" font-size="10" font-weight="bold" font-family="sans-serif">Get Started  →</text>
+          </svg>
+        </div>
+        <div class="sc-label">
+          <div class="sc-label-name">Onboarding — Offline Mode</div>
+          <div class="sc-label-desc">Communicates key value props in 3 screens</div>
+        </div>
+      </div>
+
+      <!-- Screen 4: Video Player -->
+      <div class="sc sc-4 reveal reveal-delay-1">
+        <div class="sc-visual">
+          <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="300" height="225" fill="#FAFAF8"/>
+            <rect width="300" height="32" fill="white" stroke="#EBEBEB" stroke-width="0.5"/>
+            <text x="12" y="20" fill="#888" font-size="9" font-family="sans-serif">← Back to Course</text>
+            <rect x="218" y="8" width="72" height="16" rx="8" fill="#C8E6DF"/>
+            <text x="254" y="19" text-anchor="middle" fill="#3D7A6B" font-size="8" font-weight="bold" font-family="sans-serif">📥 Offline</text>
+            <!-- video -->
+            <rect x="8" y="38" width="284" height="120" rx="7" fill="#0B0F1A"/>
+            <circle cx="150" cy="98" r="22" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            <polygon points="143,87 143,109 163,98" fill="white"/>
+            <!-- progress -->
+            <rect x="8" y="164" width="284" height="3" fill="rgba(247,243,236,0.1)"/>
+            <rect x="8" y="164" width="168" height="3" fill="#E8A020"/>
+            <circle cx="176" cy="165.5" r="4" fill="#E8A020"/>
+            <!-- info -->
+            <text x="12" y="183" fill="#0B0F1A" font-size="9" font-weight="bold" font-family="sans-serif">Lesson 4.2 — Binary Search Trees</text>
+            <text x="12" y="196" fill="#888" font-size="8" font-family="sans-serif">Dr. Adeola Bello  ·  14:32 / 22:00</text>
+            <!-- tabs -->
+            <rect x="8" y="204" width="40" height="14" rx="7" fill="#0B0F1A"/>
+            <text x="28" y="214" text-anchor="middle" fill="#E8A020" font-size="7" font-weight="bold" font-family="sans-serif">Notes</text>
+            <rect x="54" y="204" width="50" height="14" rx="7" fill="#F0EDE6"/>
+            <text x="79" y="214" text-anchor="middle" fill="#888" font-size="7" font-family="sans-serif">Resources</text>
+            <rect x="110" y="204" width="58" height="14" rx="7" fill="#F0EDE6"/>
+            <text x="139" y="214" text-anchor="middle" fill="#888" font-size="7" font-family="sans-serif">Discussion</text>
+          </svg>
+        </div>
+        <div class="sc-label">
+          <div class="sc-label-name">Video Lesson Player</div>
+          <div class="sc-label-desc">Offline-first player with notes and discussion tabs</div>
+        </div>
+      </div>
+
+      <!-- Screen 5: Certificate -->
+      <div class="sc sc-5 reveal reveal-delay-2">
+        <div class="sc-visual">
+          <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="300" height="225" fill="#F7F3EC"/>
+            <!-- certificate frame -->
+            <rect x="12" y="12" width="276" height="201" rx="8" fill="white" stroke="#DDD7CC" stroke-width="1"/>
+            <rect x="16" y="16" width="268" height="193" rx="6" fill="none" stroke="#E8A020" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- header -->
+            <rect x="12" y="12" width="276" height="48" rx="8" fill="#0B0F1A"/>
+            <rect x="12" y="44" width="276" height="16" fill="#0B0F1A"/>
+            <text x="150" y="32" text-anchor="middle" fill="#E8A020" font-size="13" font-weight="bold" font-family="Georgia">EduAfrika</text>
+            <text x="150" y="50" text-anchor="middle" fill="rgba(247,243,236,0.5)" font-size="7" letter-spacing="2" font-family="sans-serif">CERTIFICATE OF COMPLETION</text>
+            <!-- seal -->
+            <circle cx="150" cy="100" r="26" fill="#F7F3EC" stroke="#E8A020" stroke-width="1.5"/>
+            <text x="150" y="108" text-anchor="middle" font-size="22">🏆</text>
+            <!-- text -->
+            <text x="150" y="140" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">This certifies that</text>
+            <text x="150" y="158" text-anchor="middle" fill="#0B0F1A" font-size="14" font-weight="bold" font-family="Georgia">Amara Okonkwo</text>
+            <line x1="70" y1="164" x2="230" y2="164" stroke="#E8A020" stroke-width="1"/>
+            <text x="150" y="178" text-anchor="middle" fill="#888" font-size="7" font-family="sans-serif">has completed</text>
+            <text x="150" y="192" text-anchor="middle" fill="#5B21B6" font-size="10" font-weight="bold" font-family="Georgia">Data Structures &amp; Algorithms</text>
+            <rect x="115" y="200" width="70" height="9" rx="4.5" fill="#C8E6DF"/>
+            <text x="150" y="208" text-anchor="middle" fill="#3D7A6B" font-size="7" font-weight="bold" font-family="sans-serif">Score: 94% · Distinction</text>
+          </svg>
+        </div>
+        <div class="sc-label">
+          <div class="sc-label-name">Completion Certificate</div>
+          <div class="sc-label-desc">Verifiable, shareable credential with distinction grade</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  OUTCOMES
+══════════════════════════════════════════════ -->
+<div class="outcomes-band">
+  <div class="container">
+    <div class="outcomes-inner">
+      <div class="outcomes-intro reveal">
+        <div class="eyebrow" style="color:var(--saffron)">OUTCOMES</div>
+        <h2 class="display" style="color:var(--ivory)">What the numbers proved</h2>
+        <p class="body-text" style="color:rgba(247,243,236,0.45);margin-top:1rem">After 3 rounds of moderated testing with 18 participants across Nigeria, Ghana, and Kenya.</p>
+      </div>
+      <div class="outcomes-numbers reveal reveal-delay-1">
+        <div class="on-card accent">
+          <span class="on-num">94%</span>
+          <div class="on-lbl">Student satisfaction in final testing round</div>
+        </div>
+        <div class="on-card">
+          <span class="on-num">↓74%</span>
+          <div class="on-lbl">Reduction in payment drop-off vs. competitor benchmark</div>
+        </div>
+        <div class="on-card">
+          <span class="on-num">2.3×</span>
+          <div class="on-lbl">Higher enrolment on "Made in Africa" badged courses</div>
+        </div>
+        <div class="on-card">
+          <span class="on-num">87</span>
+          <div class="on-lbl">System Usability Scale score (industry average: 68)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  LEARNINGS
+══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="learnings-layout">
+      <div class="reveal">
+        <div class="eyebrow">REFLECTIONS</div>
+        <h2 class="display">What this project<br>taught me</h2>
+        <p class="body-text">EduAfrika was the project that changed how I think about design. Not the prettiest, not the most technically complex — but the most honest.</p>
+      </div>
+      <div class="learning-list reveal reveal-delay-1">
+        <div class="learning-item">
+          <div class="li-num">01</div>
+          <div>
+            <div class="li-title">Context is the brief</div>
+            <div class="li-body">The most important design decisions on this project had nothing to do with visual style. Offline-first wasn't a feature — it was the entire product philosophy. You can't design well for a context you haven't lived in, which is why research isn't optional.</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-num">02</div>
+          <div>
+            <div class="li-title">Small signals carry enormous weight</div>
+            <div class="li-body">The "Made in Africa" badge was a 2-hour design decision. It moved enrolment by 2.3×. Students said they felt "seen" and "trusted the content more." Cultural representation in product design isn't just ethical — it's measurably effective.</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-num">03</div>
+          <div>
+            <div class="li-title">Real users will always surprise you</div>
+            <div class="li-body">My first onboarding was 5 screens. I thought it built enough context. Testing showed 3 was the hard limit before drop-off. I had assumed. They corrected me. The discipline is learning to hold your assumptions lightly until someone real sits in front of your prototype.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  FOOTER CTA
+══════════════════════════════════════════════ -->
+<div class="footer-cta">
+  <div class="container-narrow">
+    <h2 class="display">Let's build something<br>that actually matters</h2>
+    <p class="footer-sub">Available for remote UI/UX roles and freelance projects globally · Based in Abuja, Nigeria</p>
+    <div class="footer-links">
+      <a href="https://adedotun-portfolio.netlify.app" class="footer-link dark">View Full Portfolio</a>
+      <a href="mailto:aadedotun80@gmail.com" class="footer-link ghost">aadedotun80@gmail.com</a>
+      <a href="https://www.linkedin.com/in/adedotunadewumi" class="footer-link ghost">LinkedIn</a>
+    </div>
+    <div class="footer-meta">
+      ADEWUMI ADEDOTUN EMMANUEL · UI/UX DESIGNER · +234 907 922 6778
+    </div>
+  </div>
+</div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
